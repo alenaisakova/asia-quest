@@ -40,6 +40,15 @@
       <Placemark><name>Su Lai Chuan</name><description>[YOUR PICK · food] Since 1946. Ba-wan and taro cake, Michelin Bib. Walk-in, 5 min from Longshan Temple.</description><Point><coordinates>121.5004,25.0338,0</coordinates></Point></Placemark>
       <Placemark><name>Fujin Tree Taiwanese Cuisine &amp; Champagne (Songshan)</name><description>[YOUR PICK · food] One Michelin star, modern Taiwanese. Needs a booking; weekday lunch is the easiest table.</description><Point><coordinates>121.5492,25.0598,0</coordinates></Point></Placemark>
     </Folder>
+    <Folder><name>Tainan 18 Nov</name>
+      <Placemark><name>Tainan HSR station</name><description>[YOUR PICK · transit] Change to the shuttle train (Shalun line) into the city, about 25 min.</description><Point><coordinates>120.2856,22.925,0</coordinates></Point></Placemark>
+      <Placemark><name>Tainan Railway Station</name><description>[YOUR PICK · transit] Trains to Kaohsiung every ~15 min, about 35–45 min.</description><Point><coordinates>120.2128,22.9971,0</coordinates></Point></Placemark>
+      <Placemark><name>Qiu Jia Squid Vermicelli</name><description>[YOUR PICK · food] Squid rice noodle soup, 120 TWD. A morning-to-lunch shop, so check it is still open.</description><Point><coordinates>120.1975,22.9935,0</coordinates></Point></Placemark>
+      <Placemark><name>Lo Cheng Migao</name><description>[YOUR PICK · food] Michelin Bib. Sticky rice with braised pork, 60 TWD. Cash only; sells out by afternoon. Michelin lists it closed on Wednesdays, so check.</description><Point><coordinates>120.1985,22.993,0</coordinates></Point></Placemark>
+      <Placemark><name>Yuan Zai Hui shaved ice</name><description>[YOUR PICK · food] Michelin Bib eight-treasure shaved ice, 60 TWD. Pick your toppings.</description><Point><coordinates>120.1965,22.992,0</coordinates></Point></Placemark>
+      <Placemark><name>A Sha Restaurant (main branch)</name><description>[YOUR PICK · food] Since 1940. Tainan banquet classics, famous red-crab sticky rice. Sit-down; book ahead.</description><Point><coordinates>120.203,22.989,0</coordinates></Point></Placemark>
+      <Placemark><name>A Hsing Congee</name><description>[YOUR PICK · food] Milkfish congee since 1965, 95 TWD. Queue from 5 am, sells out before noon. Cash only.</description><Point><coordinates>120.196,22.994,0</coordinates></Point></Placemark>
+    </Folder>
     <Folder><name>Kaohsiung 18–19 Nov</name>
       <Placemark><name>HSR Zuoying Station</name><description>[IDEA · transit] High-speed rail from Taipei Main Station takes about 1h35.</description><Point><coordinates>120.3081,22.6873,0</coordinates></Point></Placemark>
       <Placemark><name>Just Inn Kaohsiung</name><description>[BOOKED · hotel] 18→19 Nov · Just Inn Suite · booking 1653718041333529 · check-in 15:00, out 11:00 · 8 min walk to Liuhe Night Market</description><Point><coordinates>120.2936,22.6338,0</coordinates></Point></Placemark>
@@ -61,6 +70,8 @@
       <Placemark><name>Fengjia Night Market</name><description>[IDEA · food] Taiwan's biggest night market, open late. Good for a late dinner after the trip down from Alishan.</description><Point><coordinates>120.6464,24.1752,0</coordinates></Point></Placemark>
       <Placemark><name>Miyahara (ice cream &amp; sweets)</name><description>[IDEA · food] 1920s eye clinic turned ice cream parlour, by Taichung Station.</description><Point><coordinates>120.6835,24.1375,0</coordinates></Point></Placemark>
       <Placemark><name>Kung Fu Shanghai Fish Ball</name><description>[YOUR PICK · food] Michelin Bib. Scallion oil noodles and chilli oil dumplings. Check opening hours.</description><Point><coordinates>120.662,24.15,0</coordinates></Point></Placemark>
+      <Placemark><name>Ming Juan Lou (InterContinental)</name><description>[YOUR PICK · food] Michelin-listed Cantonese, roast duck. Closed Mon &amp; Tue, so Thursday works. Book ahead.</description><Point><coordinates>120.6625,24.1515,0</coordinates></Point></Placemark>
+      <Placemark><name>Yu Yue Lou</name><description>[YOUR PICK · food] Michelin-listed modern Cantonese with a Hong Kong kitchen team.</description><Point><coordinates>120.644,24.1505,0</coordinates></Point></Placemark>
     </Folder>
     <Folder><name>North Taiwan 20–22 Nov</name>
       <Placemark><name>Jiufen Old Street</name><description>[BOOKED · sight] Your pick. Lantern-lit old street on the hill; best at dusk. Bus 1062 from Zhongxiao Fuxing in Taipei, about 1 hour.</description><Point><coordinates>121.8448,25.1092,0</coordinates></Point></Placemark>

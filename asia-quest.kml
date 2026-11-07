@@ -21,6 +21,13 @@
       <Placemark><name>Chiang Kai-shek Memorial Hall</name><description>[IDEA · sight]</description><Point><coordinates>121.5219,25.0346,0</coordinates></Point></Placemark>
       <Placemark><name>Din Tai Fung (Xinyi Rd)</name><description>[IDEA · food] The original branch, on Yongkang Street's corner. Take a queue number, then wander.</description><Point><coordinates>121.53,25.0334,0</coordinates></Point></Placemark>
       <Placemark><name>Jiufen Old Street</name><description>[IDEA · sight] About 1 hour by bus from Zhongxiao Fuxing. Prettiest at dusk.</description><Point><coordinates>121.8448,25.1092,0</coordinates></Point></Placemark>
+      <Placemark><name>Songshan Ciyou Temple</name><description>[IDEA · sight] Ornate Mazu temple right at the Raohe night market gate.</description><Point><coordinates>121.5779,25.051,0</coordinates></Point></Placemark>
+      <Placemark><name>Sun Yat-sen Memorial Hall</name><description>[IDEA · sight] 3 min walk from Hanns House. Changing of the guard on the hour.</description><Point><coordinates>121.5602,25.04,0</coordinates></Point></Placemark>
+      <Placemark><name>Din Tai Fung (Taipei 101, B1)</name><description>[IDEA · food] Soup dumplings under the tower. Take a queue number, then shop.</description><Point><coordinates>121.565,25.0336,0</coordinates></Point></Placemark>
+      <Placemark><name>Fuzhou pepper buns (Raohe gate)</name><description>[IDEA · food] Michelin Bib Gourmand stall at the market entrance. Expect a queue.</description><Point><coordinates>121.5772,25.0508,0</coordinates></Point></Placemark>
+      <Placemark><name>Bopiliao Historic Block</name><description>[IDEA · sight] Qing-era brick street, 3 min from Longshan Temple.</description><Point><coordinates>121.5019,25.0367,0</coordinates></Point></Placemark>
+      <Placemark><name>Yong Kang Beef Noodle</name><description>[IDEA · food] Classic braised beef noodle soup near Yongkang Street.</description><Point><coordinates>121.5293,25.0322,0</coordinates></Point></Placemark>
+      <Placemark><name>Ay-Chung Flour-Rice Noodle</name><description>[IDEA · food] Standing-only bowls of oyster mee sua in Ximending.</description><Point><coordinates>121.5076,25.0438,0</coordinates></Point></Placemark>
     </Folder>
     <Folder><name>Kaohsiung 18–19 Nov</name>
       <Placemark><name>HSR Zuoying Station</name><description>[IDEA · transit] High-speed rail from Taipei Main Station takes about 1h35.</description><Point><coordinates>120.3081,22.6873,0</coordinates></Point></Placemark>
@@ -52,6 +59,7 @@
       <Placemark><name>Star Ferry (Central → Tsim Sha Tsui)</name><description>[IDEA · transit]</description><Point><coordinates>114.1617,22.2869,0</coordinates></Point></Placemark>
       <Placemark><name>TST Promenade · Symphony of Lights 20:00</name><description>[IDEA · sight]</description><Point><coordinates>114.174,22.2932,0</coordinates></Point></Placemark>
       <Placemark><name>Temple Street Night Market</name><description>[IDEA · food]</description><Point><coordinates>114.17,22.3059,0</coordinates></Point></Placemark>
+      <Placemark><name>Mak's Noodle (Central)</name><description>[IDEA · food] Tiny wonton noodles on Wellington St, near Man Mo Temple.</description><Point><coordinates>114.1545,22.283,0</coordinates></Point></Placemark>
     </Folder>
     <Folder><name>Beijing (transit) </name>
       <Placemark><name>Beijing Daxing Airport (PKX)</name><description>[BOOKED · airport]</description><Point><coordinates>116.4105,39.5098,0</coordinates></Point></Placemark>

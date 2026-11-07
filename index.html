@@ -83,6 +83,7 @@ h2{font-size:20px;color:var(--sky1)}
 .fb .v{border:1px solid rgba(255,255,255,.25);background:transparent;color:inherit;border-radius:99px;padding:3px 10px;font:inherit;font-size:12.5px;cursor:pointer}
 .fb .v.on{background:var(--booked);color:#14302a;border-color:var(--booked);font-weight:800}
 .fb textarea{flex:1 1 100%;min-width:0;resize:vertical;border-radius:8px;border:1px solid rgba(255,255,255,.2);background:rgba(0,0,0,.25);color:inherit;font:inherit;font-size:13px;padding:6px 8px}
+@media (min-width:881px){.log.fit{display:flex;flex-direction:column;overflow:hidden}.log.fit .fbody{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding-right:6px;scrollbar-width:thin;scrollbar-color:rgba(242,193,78,.5) transparent}}
 .leftcol{display:flex;flex-direction:column;gap:14px;min-width:0}
 .donep{padding:14px 16px}.donep h2{display:flex;align-items:baseline;gap:10px;margin:0 0 4px}.donep h2 small{font-family:var(--body);font-size:13px;color:var(--muted);font-weight:600}
 .donep .hint{font-size:13px;color:var(--muted);margin:4px 0 0}
@@ -567,7 +568,9 @@ function renderLog(){
     if(state.day==="all"&&!d.blank&&!items.length) return "";
     return `<div class="dayc"><div class="dayh"><h3>Day ${d.n} · ${d.date}</h3><span class="ttl" style="color:${C[dayCityOf(d)].color}">${d.title}</span></div>${inner}</div>`;
   }).join("");
+  const _fb=$("#log .fbody"), _st=_fb?_fb.scrollTop:0;
   $("#log").innerHTML=`<div class="loghead"><h2>Quest log${state.day==="all"?" · whole trip":""}</h2><span id="logPathSlot"></span></div>`+tabs+`<div class="fbody">${body}</div>`;
+  { const k=state.day+"|"+state.tab+"|"+state.path, fbx=$("#log .fbody"); if(fbx&&renderLog._k===k) fbx.scrollTop=_st; renderLog._k=k; }
   $("#log").querySelectorAll(".ftab").forEach(b=>b.onclick=()=>{state.tab=b.dataset.tab;renderLog();}); placePaths();
   $("#log").querySelectorAll("input[data-k]").forEach(inp=>inp.onchange=()=>{done[inp.dataset.k]=inp.checked;store.set("aq-done",done);renderXP();const y=window.scrollY;renderLog();renderDone();window.scrollTo(0,y);});
 
@@ -601,6 +604,10 @@ $("#copyKml").onclick=async()=>{try{await navigator.clipboard.writeText(KML);$("
 
 map.on("load",()=>{ warmStyle(); addSources(); fitWorld(0); drawRoutes(); drawCities(); drawPins(); updateHead(); });
 renderPaths(); renderAlerts(); renderLevels(); renderLog(); renderDone(); renderXP();
+/* quest log is as tall as the map box; only its list scrolls */
+(function(){const mb=document.querySelector(".mapbox"), lg=$("#log"); if(!mb||!lg)return;
+  const fit=()=>{ if(window.innerWidth>880){lg.classList.add("fit");lg.style.height=mb.offsetHeight+"px";} else {lg.classList.remove("fit");lg.style.height="";} };
+  if(window.ResizeObserver) new ResizeObserver(fit).observe(mb); window.addEventListener("resize",fit); fit();})();
 </script>
 </body>
 </html>

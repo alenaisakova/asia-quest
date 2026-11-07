@@ -20,7 +20,6 @@
       <Placemark><name>Longshan Temple</name><description>[IDEA · sight]</description><Point><coordinates>121.4999,25.0372,0</coordinates></Point></Placemark>
       <Placemark><name>Chiang Kai-shek Memorial Hall</name><description>[IDEA · sight]</description><Point><coordinates>121.5219,25.0346,0</coordinates></Point></Placemark>
       <Placemark><name>Din Tai Fung (Xinyi Rd)</name><description>[IDEA · food] The original branch, on Yongkang Street's corner. Take a queue number, then wander.</description><Point><coordinates>121.53,25.0334,0</coordinates></Point></Placemark>
-      <Placemark><name>Jiufen Old Street</name><description>[IDEA · sight] About 1 hour by bus from Zhongxiao Fuxing. Prettiest at dusk.</description><Point><coordinates>121.8448,25.1092,0</coordinates></Point></Placemark>
       <Placemark><name>Songshan Ciyou Temple</name><description>[IDEA · sight] Ornate Mazu temple right at the Raohe night market gate.</description><Point><coordinates>121.5779,25.051,0</coordinates></Point></Placemark>
       <Placemark><name>Sun Yat-sen Memorial Hall</name><description>[IDEA · sight] 3 min walk from Hanns House. Changing of the guard on the hour.</description><Point><coordinates>121.5602,25.04,0</coordinates></Point></Placemark>
       <Placemark><name>Din Tai Fung (Taipei 101, B1)</name><description>[IDEA · food] Soup dumplings under the tower. Take a queue number, then shop.</description><Point><coordinates>121.565,25.0336,0</coordinates></Point></Placemark>
@@ -28,6 +27,9 @@
       <Placemark><name>Bopiliao Historic Block</name><description>[IDEA · sight] Qing-era brick street, 3 min from Longshan Temple.</description><Point><coordinates>121.5019,25.0367,0</coordinates></Point></Placemark>
       <Placemark><name>Yong Kang Beef Noodle</name><description>[IDEA · food] Classic braised beef noodle soup near Yongkang Street.</description><Point><coordinates>121.5293,25.0322,0</coordinates></Point></Placemark>
       <Placemark><name>Ay-Chung Flour-Rice Noodle</name><description>[IDEA · food] Standing-only bowls of oyster mee sua in Ximending.</description><Point><coordinates>121.5076,25.0438,0</coordinates></Point></Placemark>
+      <Placemark><name>Taipei Zoo · Giant Panda House</name><description>[BOOKED · sight] Your pick. Open 9:00–17:00, last entry 16:00. Go at opening: pandas are most active in the morning. MRT Brown line to Taipei Zoo.</description><Point><coordinates>121.581,24.9983,0</coordinates></Point></Placemark>
+      <Placemark><name>Maokong Gondola (Taipei Zoo Station)</name><description>[IDEA · transit] Cable car from the zoo up to Maokong's tea houses. Closed Mondays.</description><Point><coordinates>121.5768,24.996,0</coordinates></Point></Placemark>
+      <Placemark><name>Maokong tea houses</name><description>[IDEA · food] Oolong tea with a view over Taipei, at the top of the gondola.</description><Point><coordinates>121.588,24.969,0</coordinates></Point></Placemark>
     </Folder>
     <Folder><name>Kaohsiung 18–19 Nov</name>
       <Placemark><name>HSR Zuoying Station</name><description>[IDEA · transit] High-speed rail from Taipei Main Station takes about 1h35.</description><Point><coordinates>120.3081,22.6873,0</coordinates></Point></Placemark>
@@ -37,6 +39,25 @@
       <Placemark><name>Liuhe Night Market</name><description>[IDEA · food]</description><Point><coordinates>120.2995,22.6325,0</coordinates></Point></Placemark>
       <Placemark><name>Pier-2 Art Center</name><description>[IDEA · sight]</description><Point><coordinates>120.2817,22.62,0</coordinates></Point></Placemark>
       <Placemark><name>Kaohsiung Main Station (TRA)</name><description>[IDEA · transit] Express trains to Chiayi take about 1h–1h20.</description><Point><coordinates>120.3022,22.639,0</coordinates></Point></Placemark>
+    </Folder>
+    <Folder><name>Alishan 19 Nov</name>
+      <Placemark><name>Chiayi Station (Alishan Forest Railway)</name><description>[BOOKED · transit] Forest railway platform is inside the TRA station.</description><Point><coordinates>120.4412,23.4791,0</coordinates></Point></Placemark>
+      <Placemark><name>Shizilu Station</name><description>[BOOKED · transit] End of the line, 1,534 m up. About 30 min by road to the forest park.</description><Point><coordinates>120.75475,23.49275,0</coordinates></Point></Placemark>
+      <Placemark><name>Alishan National Forest Recreation Area</name><description>[IDEA · sight] Giant cypresses, Sister Ponds, sunrise at Zhushan.</description><Point><coordinates>120.803,23.5106,0</coordinates></Point></Placemark>
+      <Placemark><name>Chiayi HSR Station</name><description>[IDEA · transit] Alishan bus 7329 ends here; high-speed rail north to Taichung takes about 30 min.</description><Point><coordinates>120.3237,23.4593,0</coordinates></Point></Placemark>
+    </Folder>
+    <Folder><name>Taichung 19–20 Nov</name>
+      <Placemark><name>Taichung HSR Station</name><description>[IDEA · transit]</description><Point><coordinates>120.6157,24.1121,0</coordinates></Point></Placemark>
+      <Placemark><name>Fengjia Night Market</name><description>[IDEA · food] Taiwan's biggest night market, open late. Good for a late dinner after the trip down from Alishan.</description><Point><coordinates>120.6464,24.1752,0</coordinates></Point></Placemark>
+      <Placemark><name>Miyahara (ice cream &amp; sweets)</name><description>[IDEA · food] 1920s eye clinic turned ice cream parlour, by Taichung Station.</description><Point><coordinates>120.6835,24.1375,0</coordinates></Point></Placemark>
+    </Folder>
+    <Folder><name>North Taiwan 20–22 Nov</name>
+      <Placemark><name>Jiufen Old Street</name><description>[BOOKED · sight] Your pick. Lantern-lit old street on the hill; best at dusk. Bus 1062 from Zhongxiao Fuxing in Taipei, about 1 hour.</description><Point><coordinates>121.8448,25.1092,0</coordinates></Point></Placemark>
+      <Placemark><name>Hsinchu HSR Station</name><description>[IDEA · transit] About 25 min from Taichung. Taxi to the museum about 15 min.</description><Point><coordinates>121.0405,24.8081,0</coordinates></Point></Placemark>
+      <Placemark><name>TSMC Museum of Innovation</name><description>[BOOKED · sight] Your pick. Free, but entry by reservation only (tsmcmoi.com), and slots fill weeks ahead. Hsinchu Science Park.</description><Point><coordinates>121.0135,24.774,0</coordinates></Point></Placemark>
+      <Placemark><name>A-Gan Yi taro balls (Jiufen)</name><description>[IDEA · food] Taro ball dessert with a view over the bay.</description><Point><coordinates>121.8437,25.1083,0</coordinates></Point></Placemark>
+      <Placemark><name>Beitou hot springs (idea)</name><description>[IDEA · sight] Your hot spring day. I put Beitou in as a placeholder; tell me which hot spring you've chosen.</description><Point><coordinates>121.5115,25.1378,0</coordinates></Point></Placemark>
+      <Placemark><name>Beitou Hot Spring Museum</name><description>[IDEA · sight]</description><Point><coordinates>121.5079,25.1366,0</coordinates></Point></Placemark>
     </Folder>
     <Folder><name>Tokyo 22–24 Nov</name>
       <Placemark><name>Narita Airport (NRT), Terminal 2</name><description>[BOOKED · airport]</description><Point><coordinates>140.3864,35.7647,0</coordinates></Point></Placemark>

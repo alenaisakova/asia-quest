@@ -150,6 +150,8 @@ textarea{width:100%;height:80px;background:rgba(0,0,0,.25);color:var(--muted);bo
 .ftab{min-width:0;overflow-wrap:anywhere}
 .stop .nt,.stop .tx{overflow-wrap:anywhere}
 .lower.solo{grid-template-columns:1fr}
+.main.solo{grid-template-columns:1fr}
+.main.solo .stage{aspect-ratio:auto;height:min(70vh,640px)}
 </style>
 </head>
 <body>
@@ -392,7 +394,11 @@ function updateHead(){
 }
 
 /* ---------- side panels ---------- */
-function showAlerts(){ const all=state.day==="all"; $("#lower").style.display=all?"":"none"; }
+function showAlerts(){ const all=state.day==="all";
+  $("#lower").style.display=all?"":"none";
+  $("#log").style.display=all?"none":"";
+  document.querySelector(".main").classList.toggle("solo",all);
+  if(typeof map!=="undefined") map.resize(); }
 function renderLevels(){ showAlerts();
   const el=$("#levels"); el.innerHTML="";
   const mk=(key,top,sub,col,blank)=>{const b=document.createElement("button");b.className="lv"+(blank?" blank":"");b.setAttribute("aria-pressed",String(state.day===key));

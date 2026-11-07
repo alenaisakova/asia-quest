@@ -83,6 +83,15 @@ h2{font-size:20px;color:var(--sky1)}
 .fb .v{border:1px solid rgba(255,255,255,.25);background:transparent;color:inherit;border-radius:99px;padding:3px 10px;font:inherit;font-size:12.5px;cursor:pointer}
 .fb .v.on{background:var(--booked);color:#14302a;border-color:var(--booked);font-weight:800}
 .fb textarea{flex:1 1 100%;min-width:0;resize:vertical;border-radius:8px;border:1px solid rgba(255,255,255,.2);background:rgba(0,0,0,.25);color:inherit;font:inherit;font-size:13px;padding:6px 8px}
+.leftcol{display:flex;flex-direction:column;gap:14px;min-width:0}
+.donep{padding:14px 16px}.donep h2{display:flex;align-items:baseline;gap:10px;margin:0 0 4px}.donep h2 small{font-family:var(--body);font-size:13px;color:var(--muted);font-weight:600}
+.donep .hint{font-size:13px;color:var(--muted);margin:4px 0 0}
+.donep .dday{margin-top:12px;font-family:var(--display);color:var(--sky1);font-size:15px}
+.drow{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start;padding:10px 0;border-top:1px dashed rgba(255,255,255,.12)}
+.drow input{margin-top:3px;accent-color:var(--booked);width:18px;height:18px}
+.drow .t{font-weight:800}.drow .k{font-size:12px;color:var(--muted);margin-left:6px}
+.drow.plain{padding:6px 0}.drow.plain .t{font-weight:600;opacity:.75}
+.donep .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:0 18px}
 .loghead{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 12px;margin-bottom:10px}.loghead h2{margin:0}
 .back{margin-left:auto;background:linear-gradient(180deg,#d9443a,#a8231c);color:#ffe3a0!important;color:#14302a;border:0;border-radius:99px;padding:6px 14px;font-family:var(--display);font-size:15px}
 .stage{position:relative;width:100%;overflow:hidden;border-radius:12px;background:#2b7f8f;box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)}
@@ -209,6 +218,7 @@ textarea{width:100%;height:80px;background:rgba(0,0,0,.25);color:var(--muted);bo
   <nav class="levels glass" id="levels" aria-label="Choose a day or the whole trip"></nav>
 
   <div class="main">
+   <div class="leftcol">
     <section class="mapbox glass" aria-label="Map">
       <div class="maphead">
         <h2 id="mapTitle">World map</h2>
@@ -229,6 +239,8 @@ textarea{width:100%;height:80px;background:rgba(0,0,0,.25);color:var(--muted);bo
         <span>H inn · A airport · F food · S sight · $ shop · T transit · scroll or pinch to zoom · right-drag or 3D to tilt</span>
       </div>
     </section>
+    <section class="glass donep" id="donePanel" aria-label="Feedback"></section>
+   </div>
 
     <section class="log glass" id="log" aria-label="Quest log"></section>
   </div>
@@ -484,7 +496,7 @@ function renderLevels(){ showAlerts();
   TRIP.days.forEach(d=>mk(d.n,"Day "+d.n,d.date,C[dayCityOf(d)].color,d.blank));
 }
 function selectDay(key){
-  state.day=key; state.hl=null; renderLevels(); renderLog();
+  state.day=key; state.hl=null; renderLevels(); renderLog(); renderDone();
   if(key==="all") openWorld();
   else if(TRIP.days[key-1].blank) openWorld();
   else{const d=TRIP.days[key-1], c=dayCityOf(d); const ids=d.stops.filter(visible).map(s=>s.p).filter(id=>id&&P[id]&&P[id].city===c&&!P[id].far); openCity(c,ids);}
@@ -502,7 +514,7 @@ function stopHTML(d,s,i){
   const nameBtn=p?`${whoTag(s)}<button class="nm" data-go="${s.p}">${esc(p.name)}</button><span class="tag ${p.status}">${STATUS_TXT[p.status]}</span>${p.book?`<span class="bk ${p.book.lvl}">📅 ${p.book.lvl==="must"?"BOOK AHEAD":"BETTER TO PREBOOK"}</span>`:""}<a class="gm" href="${gmaps(p)}" target="_blank" rel="noopener">Google Maps ↗</a>`:"";
   const note=[s.x,p&&p.note&&!s.x?p.note:null].filter(Boolean).join(" ");
   return `<div class="stop${chk?" done":""}${p&&p.book&&!chk?" needbook "+p.book.lvl:""}" ${s.p?`data-pid="${s.p}"`:""}><input type="checkbox" id="${key}" data-k="${key}" ${chk?"checked":""} aria-label="Mark done"><span class="tm">${s.t}</span>
-  <div class="bd">${p?"":whoTag(s)}${nameBtn}${note?`<span class="${p?"nt":"tx"}">${esc(note)}</span>`:""}${p&&p.book?`<div class="bkhow ${p.book.lvl}">📅 ${esc(p.book.how)}</div>`:""}${p&&p.cat?foodHTML(p):""}${chk?fbHTML(key):""}</div></div>`;
+  <div class="bd">${p?"":whoTag(s)}${nameBtn}${note?`<span class="${p?"nt":"tx"}">${esc(note)}</span>`:""}${p&&p.book?`<div class="bkhow ${p.book.lvl}">📅 ${esc(p.book.how)}</div>`:""}${p&&p.cat?foodHTML(p):""}</div></div>`;
 }
 const imgUrl=p=>"https://www.google.com/search?tbm=isch&q="+encodeURIComponent(p.img||p.name);
 function foodHTML(p){ const ph=p.photo;
@@ -513,17 +525,33 @@ function openPic(b){ let lb=$("#lightbox"); if(!lb){lb=document.createElement("d
 document.addEventListener("click",e=>{const b=e.target.closest(".dishpic"); if(b){e.preventDefault();openPic(b);}});
 /* which folder a stop belongs to: bookings & essentials / places to go / places to eat */
 function fbHTML(key){ const f=fb[key]||{};
-  return `<div class="fb" data-fb="${key}"><span class="q">Worth it?</span><button class="v${f.v==="up"?" on":""}" data-v="up">👍 Worth it</button><button class="v${f.v==="down"?" on":""}" data-v="down">👎 Not really</button><textarea rows="2" placeholder="Your comment (optional)">${esc(f.c||"")}</textarea></div>`; }
+  return `<div class="fb" data-fb="${key}"><span class="q">How was it?</span><button class="v${f.v==="up"?" on":""}" data-v="up">👍 Worth it</button><button class="v${f.v==="down"?" on":""}" data-v="down">👎 Not really</button><textarea rows="2" placeholder="Your comment (optional)">${esc(f.c||"")}</textarea></div>`; }
+const RATE=["hotel","sight","food","shop"];
+function renderDone(){
+  const el=$("#donePanel"); if(!el)return; const all=state.day==="all";
+  const days=all?TRIP.days:[TRIP.days[state.day-1]];
+  const rows=days.map(d=>{const its=d.stops.map((s,i)=>({s,i})).filter(o=>visible(o.s)&&done[`d${d.n}-${o.i}`]); if(!its.length)return "";
+    return (all?`<div class="dday">Day ${d.n} · ${d.date}</div>`:"")+`<div class="grid">${its.map(({s,i})=>{const key=`d${d.n}-${i}`, p=s.p?P[s.p]:null, f=s.f?F[s.f]:null;
+      const title=f?`✈ ${f.code} ${P[f.from].name.split(" (")[0]} → ${P[f.to].name.split(" (")[0]}`:p?p.name:(s.x||"Task");
+      const rate=p&&RATE.includes(p.type)&&(p.type!=="hotel"||/check(s|ing)? ?out/i.test(s.x||""));
+      return `<div class="drow${rate?"":" plain"}"><input type="checkbox" checked data-undo="${key}" aria-label="Move back to the quest log"><div><span class="t">${esc(title)}</span><span class="k">${s.t}</span>${rate?fbHTML(key):""}</div></div>`;}).join("")}</div>`;}).join("");
+  if(all&&!rows){el.style.display="none";return;} el.style.display="";
+  el.innerHTML=`<h2>Feedback <small>${all?"everything you've done so far":"what you've done today"}</small></h2>`+(rows||`<p class="hint">Tick something off in the quest log and it lands here, so you can say whether it was worth it.</p>`);
+  el.querySelectorAll("input[data-undo]").forEach(inp=>inp.onchange=()=>{done[inp.dataset.undo]=false;store.set("aq-done",done);renderXP();renderLog();renderDone();});
+  el.querySelectorAll(".fb").forEach(box=>{const k=box.dataset.fb;
+    box.querySelectorAll(".v").forEach(b=>b.onclick=()=>{fb[k]=fb[k]||{};fb[k].v=fb[k].v===b.dataset.v?null:b.dataset.v;store.set("aq-fb",fb);box.querySelectorAll(".v").forEach(x=>x.classList.toggle("on",fb[k].v===x.dataset.v));});
+    const ta=box.querySelector("textarea"); ta.oninput=()=>{fb[k]=fb[k]||{};fb[k].c=ta.value;store.set("aq-fb",fb);};});
+}
 function folderOf(s){ if(s.f) return "book"; const p=s.p&&P[s.p]; if(!p) return "book";
   if(p.type==="food") return "food"; if(p.type==="shop") return "shop"; if(p.type==="sight") return "go"; return "book"; }
 const FOLDERS=[{k:"book",zh:"票",en:"Bookings & essentials"},{k:"go",zh:"遊",en:"Places to go"},{k:"food",zh:"食",en:"Places to eat"},{k:"shop",zh:"買",en:"Places to waste money"}];
 if(!state.tab) state.tab="book";
 function renderLog(){
   const days=state.day==="all"?TRIP.days:[TRIP.days[state.day-1]];
-  const count=k=>days.reduce((n,d)=>n+d.stops.filter(s=>visible(s)&&folderOf(s)===k).length,0);
+  const count=k=>days.reduce((n,d)=>n+d.stops.filter((s,i)=>visible(s)&&folderOf(s)===k&&!done[`d${d.n}-${i}`]).length,0);
   const tabs=`<div class="ftabs" role="tablist">${FOLDERS.map(f=>`<button role="tab" class="ftab" data-tab="${f.k}" aria-selected="${state.tab===f.k}"><span class="zh">${f.zh}</span>${f.en}<span class="cnt">${count(f.k)}</span></button>`).join("")}</div>`;
   const body=days.map(d=>{
-    const items=d.stops.map((s,i)=>({s,i})).filter(o=>visible(o.s)&&folderOf(o.s)===state.tab);
+    const items=d.stops.map((s,i)=>({s,i})).filter(o=>visible(o.s)&&folderOf(o.s)===state.tab&&!done[`d${d.n}-${o.i}`]);
     let inner="";
     if(d.blank) inner=`<div class="blankbox"><b>Secret level</b>Nothing planned yet. Send me where you go and this level unlocks.</div>`;
     else if(state.tab==="go"){
@@ -534,22 +562,15 @@ function renderLog(){
     } else {
       inner=items.filter(o=>!done[`d${d.n}-${o.i}`]).map(o=>stopHTML(d,o.s,o.i)).join("");
     }
-    const fin=items.filter(o=>done[`d${d.n}-${o.i}`]);
-    if(fin.length) inner+=`<div class="sub donehead">✓ Done · ${fin.length}</div>`+fin.map(o=>stopHTML(d,o.s,o.i)).join("");
+
     if(!inner) inner=`<div class="emptyf">Nothing here for this day yet.</div>`;
     if(state.day==="all"&&!d.blank&&!items.length) return "";
     return `<div class="dayc"><div class="dayh"><h3>Day ${d.n} · ${d.date}</h3><span class="ttl" style="color:${C[dayCityOf(d)].color}">${d.title}</span></div>${inner}</div>`;
   }).join("");
   $("#log").innerHTML=`<div class="loghead"><h2>Quest log${state.day==="all"?" · whole trip":""}</h2><span id="logPathSlot"></span></div>`+tabs+`<div class="fbody">${body}</div>`;
   $("#log").querySelectorAll(".ftab").forEach(b=>b.onclick=()=>{state.tab=b.dataset.tab;renderLog();}); placePaths();
-  $("#log").querySelectorAll("input[data-k]").forEach(inp=>inp.onchange=()=>{done[inp.dataset.k]=inp.checked;store.set("aq-done",done);renderXP();const y=window.scrollY;renderLog();window.scrollTo(0,y);});
-  $("#log").querySelectorAll(".fb").forEach(box=>{const k=box.dataset.fb;
-    box.querySelectorAll(".v").forEach(b=>b.onclick=()=>{fb[k]=fb[k]||{};fb[k].v=fb[k].v===b.dataset.v?null:b.dataset.v;store.set("aq-fb",fb);box.querySelectorAll(".v").forEach(x=>x.classList.toggle("on",fb[k].v===x.dataset.v));});
-    const ta=box.querySelector("textarea"); ta.oninput=()=>{fb[k]=fb[k]||{};fb[k].c=ta.value;store.set("aq-fb",fb);};});
-  $("#log").querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>{const id=b.dataset.go,p=P[id];state.hl=id;
-    if(C[p.city])state.city=p.city; state.view="city";
-    map.flyTo({center:[p.lng,p.lat],zoom:Math.max(map.getZoom(),16),duration:1400}); map.once("moveend",()=>{drawPins();});
-    document.getElementById("stage").scrollIntoView({block:"nearest",behavior:"smooth"});});
+  $("#log").querySelectorAll("input[data-k]").forEach(inp=>inp.onchange=()=>{done[inp.dataset.k]=inp.checked;store.set("aq-done",done);renderXP();const y=window.scrollY;renderLog();renderDone();window.scrollTo(0,y);});
+
 }
 /* open the folder that holds a pin, then scroll to it */
 function revealInLog(id){
@@ -579,7 +600,7 @@ $("#kmlText").value=KML;
 $("#copyKml").onclick=async()=>{try{await navigator.clipboard.writeText(KML);$("#copyMsg").textContent="Copied. Paste into a text file named asia-quest.kml, then import it.";}catch(e){$("#kmlText").select();$("#copyMsg").textContent="Copy is blocked here. The text below is selected: press Ctrl/Cmd+C.";}};
 
 map.on("load",()=>{ warmStyle(); addSources(); fitWorld(0); drawRoutes(); drawCities(); drawPins(); updateHead(); });
-renderPaths(); renderAlerts(); renderLevels(); renderLog(); renderXP();
+renderPaths(); renderAlerts(); renderLevels(); renderLog(); renderDone(); renderXP();
 </script>
 </body>
 </html>

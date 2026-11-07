@@ -365,7 +365,7 @@ function drawRoutes(){
   if(state.day==="all"||(state.view==="world"&&legOn)){
     const timeline=list=>{ const byDay={}; list.forEach(l=>(byDay[l.day]=byDay[l.day]||[]).push(l));
       return Object.entries(byDay).flatMap(([d,ls])=>ls.map((l,j)=>({pts:l.pts,t0:+d+.1+.8*j/ls.length,t1:+d+.1+.8*(j+1)/ls.length}))).sort((a,b)=>a.t0-b.t0); };
-    const all=state.day==="all", from=all?1:state.day, to=all?13:state.day+1, secs=all?30:6;
+    const all=state.day==="all", from=all?1:state.day, to=all?13:state.day+1, secs=all?72:14;
     clockT0=performance.now();
     flyTimeline(0, onPath("A")?timeline(legsBy.A):[], from,to,secs); flyTimeline(1, state.path!=="A"?timeline(legsBy.Z):[], from,to,secs);
   } else { flyTimeline(1,[],0,1,1); flyShip(0, seq.length>1?seq:[], Math.max(8,seq.length*2.5)); }

@@ -55,6 +55,8 @@ h2{font-size:20px;color:var(--sky1)}
 .maphead .where{color:var(--muted);font-weight:700}
 .chip{background:var(--panel2);border:1.5px solid rgba(233,196,106,.3);border-radius:99px;padding:3px 12px;font-size:14px;font-weight:700}
 .chip[aria-pressed="true"]{border-color:var(--edge);background:rgba(233,196,106,.2)}
+.pathslot{margin-left:auto;display:flex}.pathslot:empty{display:none}.pathslot:empty + .back{margin-left:auto}.pathslot:not(:empty) + .back{margin-left:0}
+.loghead{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 12px;margin-bottom:10px}.loghead h2{margin:0}
 .back{margin-left:auto;background:linear-gradient(180deg,#d9443a,#a8231c);color:#ffe3a0!important;color:#14302a;border:0;border-radius:99px;padding:6px 14px;font-family:var(--display);font-size:15px}
 .stage{position:relative;width:100%;overflow:hidden;border-radius:12px;background:#2b7f8f;box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)}
 .pin{position:absolute;transform:translate(-50%,-100%);background:none;border:0;padding:0;display:flex;flex-direction:column;align-items:center;z-index:2}
@@ -154,7 +156,7 @@ textarea{width:100%;height:80px;background:rgba(0,0,0,.25);color:var(--muted);bo
 .main.solo .stage{aspect-ratio:auto;height:min(70vh,640px)}
 .morebtn{justify-self:start;background:transparent;border:1.5px solid var(--edge);color:var(--sky1);border-radius:99px;padding:6px 16px;font-family:var(--display);font-weight:700;font-size:15px}
 .morebtn:hover{background:rgba(242,193,78,.12)}
-.paths{display:flex;align-items:center;gap:4px;background:var(--panel);border-radius:999px;padding:4px 6px 4px 12px}
+.paths{display:flex;align-items:center;gap:4px;background:rgba(0,0,0,.22);border:1px solid rgba(242,193,78,.35);border-radius:999px;padding:4px 6px 4px 12px}
 .plabel{font-family:var(--display);font-weight:700;color:var(--sky1);font-size:15px;margin-right:4px}
 .pbtn{display:inline-flex;align-items:center;gap:6px;border:0;background:transparent;border-radius:99px;padding:4px 11px;font-weight:800;font-size:14px;color:var(--muted)}
 .pbtn i{width:10px;height:10px;border-radius:50%;display:inline-block;border:1.5px solid #fff}
@@ -170,7 +172,6 @@ textarea{width:100%;height:80px;background:rgba(0,0,0,.25);color:var(--muted);bo
       <div class="sub">14 → 25 November 2026 · Shanghai · Taipei · Tokyo · Hong Kong</div>
     </div>
     <div class="stats">
-      <div class="paths" id="paths" role="group" aria-label="Whose path to show"></div>
       <span class="stat"><b>Days</b>12</span>
       <span class="stat"><b>Flights</b><span id="flStat">10</span></span>
       <span class="stat"><b>Inns</b><span id="innStat"></span></span>
@@ -185,6 +186,7 @@ textarea{width:100%;height:80px;background:rgba(0,0,0,.25);color:var(--muted);bo
       <div class="maphead">
         <h2 id="mapTitle">World map</h2>
         <span class="where" id="mapWhere"></span>
+        <span id="mapPathSlot" class="pathslot"></span>
         <button class="back" id="backBtn" hidden>← World map</button>
       </div>
       <div class="maphead" id="filters" style="padding-top:0"></div>
@@ -433,13 +435,15 @@ function updateHead(){
 }
 
 /* ---------- side panels ---------- */
-function showAlerts(){ const all=state.day==="all";
+const PATHS_EL=(()=>{const e=document.createElement("div");e.className="paths";e.id="paths";e.setAttribute("role","group");e.setAttribute("aria-label","Whose path to show");return e;})();
+function placePaths(){ const el=PATHS_EL; const slot=state.day==="all"?$("#mapPathSlot"):$("#logPathSlot"); if(slot&&el.parentNode!==slot) slot.appendChild(el); }
+function showAlerts(){ const all=state.day==="all"; placePaths();
   $("#lower").style.display=all?"":"none";
   $("#log").style.display=all?"none":"";
   document.querySelector(".main").classList.toggle("solo",all);
   if(typeof map!=="undefined") map.resize(); }
 function renderPaths(){
-  const el=$("#paths"); if(!el)return;
+  const el=PATHS_EL;
   el.innerHTML=`<span class="plabel">Path</span>`+[["both","Both of us"],["A",TRV.A.name],["Z",TRV.Z.name]].map(([k,l])=>`<button class="pbtn" data-p="${k}" aria-pressed="${state.path===k}">${k==="both"?"":`<i style="background:${TRV[k].color}"></i>`}${l}</button>`).join("");
   el.querySelectorAll(".pbtn").forEach(b=>b.onclick=()=>{state.path=b.dataset.p;store.set("aq-path",state.path);renderPaths();renderAlerts();selectDay(state.day);});
 }
@@ -496,8 +500,8 @@ function renderLog(){
     if(state.day==="all"&&!d.blank&&!items.length) return "";
     return `<div class="dayc"><div class="dayh"><h3>Day ${d.n} · ${d.date}</h3><span class="ttl" style="color:${C[dayCityOf(d)].color}">${d.title}</span></div>${inner}</div>`;
   }).join("");
-  $("#log").innerHTML=`<h2>Quest log${state.day==="all"?" · whole trip":""}</h2>`+tabs+`<div class="fbody">${body}</div>`;
-  $("#log").querySelectorAll(".ftab").forEach(b=>b.onclick=()=>{state.tab=b.dataset.tab;renderLog();});
+  $("#log").innerHTML=`<div class="loghead"><h2>Quest log${state.day==="all"?" · whole trip":""}</h2><span id="logPathSlot"></span></div>`+tabs+`<div class="fbody">${body}</div>`;
+  $("#log").querySelectorAll(".ftab").forEach(b=>b.onclick=()=>{state.tab=b.dataset.tab;renderLog();}); placePaths();
   $("#log").querySelectorAll("input[data-k]").forEach(inp=>inp.onchange=()=>{done[inp.dataset.k]=inp.checked;store.set("aq-done",done);inp.closest(".stop").classList.toggle("done",inp.checked);renderXP();});
   $("#log").querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>{const id=b.dataset.go,p=P[id];state.hl=id;
     if(C[p.city])state.city=p.city; state.view="city";

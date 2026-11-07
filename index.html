@@ -392,7 +392,7 @@ function updateHead(){
 }
 
 /* ---------- side panels ---------- */
-function showAlerts(){ const all=state.day==="all"; $("#alertsPanel").style.display=all?"":"none"; $("#lower").classList.toggle("solo",!all); }
+function showAlerts(){ const all=state.day==="all"; $("#lower").style.display=all?"":"none"; }
 function renderLevels(){ showAlerts();
   const el=$("#levels"); el.innerHTML="";
   const mk=(key,top,sub,col,blank)=>{const b=document.createElement("button");b.className="lv"+(blank?" blank":"");b.setAttribute("aria-pressed",String(state.day===key));

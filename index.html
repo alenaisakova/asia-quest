@@ -341,9 +341,9 @@ function drawRoutes(){
   extra.slice(2).forEach(([a,b,bend,w,day])=>{ if(!onPath(w))return; const p=arc(a,b,bend,24); feats.push(line(p,{on:state.day==="all"||state.day===day,who:w})); push(w,p); });
   map.getSource("legs").setData(fc(feats));
   clear("notes");
-  const note=(t,ll)=>markers.notes.push(htmlMarker(`<div class="pin note"><span class="tip">${t}</span></div>`,ll));
-  if(onPath("A")){ note("← Alyona from Moscow · 14 Nov",ARRIVE); note("Alyona → Beijing → Moscow · 25 Nov",LEAVE); }
-  if(onPath("Z")){ note("← Aziz from Abu Dhabi via Doha · 14 Nov",AZ_IN); note("Aziz → Dubai · 26 Nov",AZ_OUT); }
+  const note=(t,ll,anc="center")=>markers.notes.push(htmlMarker(`<div class="pin note"><span class="tip">${t}</span></div>`,ll,anc));
+  if(onPath("A")){ note("← Alyona from Moscow · 14 Nov",ARRIVE,"left"); note("Alyona → Beijing → Moscow · 25 Nov",LEAVE); }
+  if(onPath("Z")){ note("← Aziz from Abu Dhabi via Doha · 14 Nov",AZ_IN,"left"); note("Aziz → Dubai · 26 Nov",AZ_OUT,"left"); }
   let seq=[];
   if(state.day!=="all") seq=stopsFor(state.day).map(s=>s.p).filter(id=>id&&P[id]&&C[P[id].city]).map(id=>[P[id].lng,P[id].lat]);
   map.getSource("day").setData(fc(seq.length>1?[line(seq)]:[]));

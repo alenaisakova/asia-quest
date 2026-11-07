@@ -8,6 +8,7 @@
       <Placemark><name>Xintiandi &amp; Sinan Mansions night walk</name><description>[IDEA · sight] Next door to INS. Quiet, lit-up old shikumen lanes after the clubs.</description><Point><coordinates>121.4749,31.2196,0</coordinates></Point></Placemark>
       <Placemark><name>The Bund at dawn</name><description>[IDEA · sight] Pudong skyline across the river. First light around 06:00.</description><Point><coordinates>121.4903,31.24,0</coordinates></Point></Placemark>
       <Placemark><name>Late-night food near Xintiandi</name><description>[IDEA · food] Soup dumplings or noodles to refuel before the airport run.</description><Point><coordinates>121.477,31.2165,0</coordinates></Point></Placemark>
+      <Placemark><name>Nanjing Road pedestrian street</name><description>[IDEA · shop] Neon shopping street, lit up late. Good stroll on the all-nighter.</description><Point><coordinates>121.4782,31.2353,0</coordinates></Point></Placemark>
     </Folder>
     <Folder><name>Taipei 15–18 Nov</name>
       <Placemark><name>Taoyuan Airport (TPE), Terminal 1</name><description>[BOOKED · airport]</description><Point><coordinates>121.2328,25.0777,0</coordinates></Point></Placemark>
@@ -30,15 +31,19 @@
       <Placemark><name>Taipei Zoo · Giant Panda House</name><description>[BOOKED · sight] Your pick. Open 9:00–17:00, last entry 16:00. Go at opening: pandas are most active in the morning. MRT Brown line to Taipei Zoo.</description><Point><coordinates>121.581,24.9983,0</coordinates></Point></Placemark>
       <Placemark><name>Maokong Gondola (Taipei Zoo Station)</name><description>[IDEA · transit] Cable car from the zoo up to Maokong's tea houses. Closed Mondays.</description><Point><coordinates>121.5768,24.996,0</coordinates></Point></Placemark>
       <Placemark><name>Maokong tea houses</name><description>[IDEA · food] Oolong tea with a view over Taipei, at the top of the gondola.</description><Point><coordinates>121.588,24.969,0</coordinates></Point></Placemark>
-      <Placemark><name>EasyCard design store, Ximending</name><description>[YOUR PICK · sight] Get your EasyCard here, not at the airport: the designs are much nicer.</description><Point><coordinates>121.507,25.044,0</coordinates></Point></Placemark>
-      <Placemark><name>Hello Kitty 7-Eleven</name><description>[YOUR PICK · sight] Themed 7-Eleven, 73 Hankou St Sec 2. A 5 min walk from Ximending.</description><Point><coordinates>121.5063,25.0459,0</coordinates></Point></Placemark>
-      <Placemark><name>Peanuts (Snoopy) 7-Eleven</name><description>[YOUR PICK · sight] Themed 7-Eleven, 37 Shaoxing N St. 3 min from Fu Hang Soy Milk.</description><Point><coordinates>121.5262,25.0452,0</coordinates></Point></Placemark>
-      <Placemark><name>Sumikko Gurashi 7-Eleven</name><description>[YOUR PICK · sight] Themed 7-Eleven, 271 Chang'an W Rd. Near Taipei Main Station.</description><Point><coordinates>121.512,25.05,0</coordinates></Point></Placemark>
-      <Placemark><name>Mickey Mouse 7-Eleven</name><description>[YOUR PICK · sight] Themed 7-Eleven, 20-2 Bade Rd Sec 3. On the way east to Raohe.</description><Point><coordinates>121.5512,25.0479,0</coordinates></Point></Placemark>
+      <Placemark><name>EasyCard design store, Ximending</name><description>[YOUR PICK · shop] Get your EasyCard here, not at the airport: the designs are much nicer.</description><Point><coordinates>121.507,25.044,0</coordinates></Point></Placemark>
+      <Placemark><name>Hello Kitty 7-Eleven</name><description>[YOUR PICK · shop] Themed 7-Eleven, 73 Hankou St Sec 2. A 5 min walk from Ximending.</description><Point><coordinates>121.5063,25.0459,0</coordinates></Point></Placemark>
+      <Placemark><name>Peanuts (Snoopy) 7-Eleven</name><description>[YOUR PICK · shop] Themed 7-Eleven, 37 Shaoxing N St. 3 min from Fu Hang Soy Milk.</description><Point><coordinates>121.5262,25.0452,0</coordinates></Point></Placemark>
+      <Placemark><name>Sumikko Gurashi 7-Eleven</name><description>[YOUR PICK · shop] Themed 7-Eleven, 271 Chang'an W Rd. Near Taipei Main Station.</description><Point><coordinates>121.512,25.05,0</coordinates></Point></Placemark>
+      <Placemark><name>Mickey Mouse 7-Eleven</name><description>[YOUR PICK · shop] Themed 7-Eleven, 20-2 Bade Rd Sec 3. On the way east to Raohe.</description><Point><coordinates>121.5512,25.0479,0</coordinates></Point></Placemark>
       <Placemark><name>Lao Shandong Beef Noodles</name><description>[YOUR PICK · food] Michelin Bib Gourmand beef noodles in Ximending. Cash only.</description><Point><coordinates>121.5072,25.0435,0</coordinates></Point></Placemark>
       <Placemark><name>Fu Hang Soy Milk</name><description>[YOUR PICK · food] Michelin Bib breakfast, 2F of Huashan Market. Order No. 24: shaobing with egg &amp; youtiao (75 NTD). Expect a queue; closes around 12:30.</description><Point><coordinates>121.5255,25.0443,0</coordinates></Point></Placemark>
       <Placemark><name>Su Lai Chuan</name><description>[YOUR PICK · food] Since 1946. Ba-wan and taro cake, Michelin Bib. Walk-in, 5 min from Longshan Temple.</description><Point><coordinates>121.5004,25.0338,0</coordinates></Point></Placemark>
       <Placemark><name>Fujin Tree Taiwanese Cuisine &amp; Champagne (Songshan)</name><description>[YOUR PICK · food] One Michelin star, modern Taiwanese. Needs a booking; weekday lunch is the easiest table.</description><Point><coordinates>121.5492,25.0598,0</coordinates></Point></Placemark>
+      <Placemark><name>Chia Te Bakery (pineapple cakes)</name><description>[IDEA · shop] Taipei's most famous pineapple cakes. Queue moves fast; 15 min walk to Raohe.</description><Point><coordinates>121.5605,25.051,0</coordinates></Point></Placemark>
+      <Placemark><name>Huashan 1914 Creative Park</name><description>[IDEA · shop] Old winery turned design shops and pop-up markets. 5 min from Fu Hang Soy Milk.</description><Point><coordinates>121.5294,25.0441,0</coordinates></Point></Placemark>
+      <Placemark><name>Carrefour Guilin (24 h hypermarket)</name><description>[IDEA · shop] Open 24 h, 5 min from Longshan Temple. Best for a snack and souvenir haul at supermarket prices.</description><Point><coordinates>121.5028,25.0367,0</coordinates></Point></Placemark>
+      <Placemark><name>Dihua Street</name><description>[IDEA · shop] Old street of dried goods, tea, fabric and little design shops.</description><Point><coordinates>121.51,25.0558,0</coordinates></Point></Placemark>
     </Folder>
     <Folder><name>Tainan 18 Nov</name>
       <Placemark><name>Tainan HSR station</name><description>[YOUR PICK · transit] Change to the shuttle train (Shalun line) into the city, about 25 min.</description><Point><coordinates>120.2856,22.925,0</coordinates></Point></Placemark>
@@ -48,6 +53,7 @@
       <Placemark><name>Yuan Zai Hui shaved ice</name><description>[YOUR PICK · food] Michelin Bib eight-treasure shaved ice, 60 TWD. Pick your toppings.</description><Point><coordinates>120.1965,22.992,0</coordinates></Point></Placemark>
       <Placemark><name>A Sha Restaurant (main branch)</name><description>[YOUR PICK · food] Since 1940. Tainan banquet classics, famous red-crab sticky rice. Sit-down; book ahead.</description><Point><coordinates>120.203,22.989,0</coordinates></Point></Placemark>
       <Placemark><name>A Hsing Congee</name><description>[YOUR PICK · food] Milkfish congee since 1965, 95 TWD. Queue from 5 am, sells out before noon. Cash only.</description><Point><coordinates>120.196,22.994,0</coordinates></Point></Placemark>
+      <Placemark><name>Hayashi Department Store (Lin)</name><description>[IDEA · shop] 1932 department store full of local brands, with a rooftop shrine. 10 min from the food crawl.</description><Point><coordinates>120.203,22.9917,0</coordinates></Point></Placemark>
     </Folder>
     <Folder><name>Kaohsiung 18–19 Nov</name>
       <Placemark><name>HSR Zuoying Station</name><description>[IDEA · transit] High-speed rail from Taipei Main Station takes about 1h35.</description><Point><coordinates>120.3081,22.6873,0</coordinates></Point></Placemark>
@@ -94,6 +100,8 @@
       <Placemark><name>Tokyu Stay Kamata – Tokyo Haneda</name><description>[BOOKED · hotel] 23→24 Nov · check-in 15:00, out 11:00 · booking 1653718122460473 · free cancel until 22 Nov 23:59 · +81 3 5714 1090</description><Point><coordinates>139.721514,35.560824,0</coordinates></Point></Placemark>
       <Placemark><name>Kamata gyoza (Nihao)</name><description>[IDEA · food] Kamata is famous for crispy-winged gyoza. Early dinner, early bed.</description><Point><coordinates>139.7155,35.5615,0</coordinates></Point></Placemark>
       <Placemark><name>Haneda Airport (HND), Terminal 3</name><description>[BOOKED · airport]</description><Point><coordinates>139.7684,35.544,0</coordinates></Point></Placemark>
+      <Placemark><name>Nakamise-dori</name><description>[IDEA · shop] The souvenir lane leading to Senso-ji.</description><Point><coordinates>139.7965,35.7116,0</coordinates></Point></Placemark>
+      <Placemark><name>Don Quijote Shibuya (MEGA)</name><description>[IDEA · shop] Chaotic discount megastore, open 24 h. Tax-free with your passport.</description><Point><coordinates>139.6976,35.6614,0</coordinates></Point></Placemark>
     </Folder>
     <Folder><name>Hong Kong 24–25 Nov</name>
       <Placemark><name>Hong Kong Airport (HKG), Terminal 1</name><description>[BOOKED · airport]</description><Point><coordinates>113.9146,22.3134,0</coordinates></Point></Placemark>
@@ -110,6 +118,7 @@
       <Placemark><name>Big Buddha (Tian Tan Buddha)</name><description>[BOOKED · sight] Your pick. 34 m bronze Buddha on the Ngong Ping plateau; 268 steps up to the base.</description><Point><coordinates>113.905,22.254,0</coordinates></Point></Placemark>
       <Placemark><name>Po Lin Monastery</name><description>[IDEA · sight] 5 min walk from the Buddha.</description><Point><coordinates>113.9076,22.2556,0</coordinates></Point></Placemark>
       <Placemark><name>Po Lin vegetarian lunch</name><description>[IDEA · food] Monastery vegetarian set lunch, right by the Buddha.</description><Point><coordinates>113.9072,22.2557,0</coordinates></Point></Placemark>
+      <Placemark><name>Citygate Outlets (Tung Chung)</name><description>[IDEA · shop] Outlet mall right next to The Silveri. Open until 22:00.</description><Point><coordinates>113.9408,22.2892,0</coordinates></Point></Placemark>
     </Folder>
     <Folder><name>Beijing (transit) </name>
       <Placemark><name>Beijing Daxing Airport (PKX)</name><description>[BOOKED · airport]</description><Point><coordinates>116.4105,39.5098,0</coordinates></Point></Placemark>

@@ -11,6 +11,7 @@
     </Folder>
     <Folder><name>Taipei 15–18 Nov</name>
       <Placemark><name>Taoyuan Airport (TPE), Terminal 1</name><description>[BOOKED · airport]</description><Point><coordinates>121.2328,25.0777,0</coordinates></Point></Placemark>
+      <Placemark><name>Hanns House</name><description>[BOOKED · hotel] 15→18 Nov · Premier Room, 101 view · booking 1653717920347246 · check-in 15:00, out 12:00 · 10 min walk to Taipei 101 · +886 2 8758 3777</description><Point><coordinates>121.5636,25.0405,0</coordinates></Point></Placemark>
       <Placemark><name>Taipei Main Station</name><description>[IDEA · transit] Airport MRT from Taoyuan (about 40 min) and the high-speed rail to Kaohsiung both start here.</description><Point><coordinates>121.517,25.0478,0</coordinates></Point></Placemark>
       <Placemark><name>Ximending</name><description>[IDEA · sight]</description><Point><coordinates>121.5068,25.0422,0</coordinates></Point></Placemark>
       <Placemark><name>Taipei 101 Observatory</name><description>[IDEA · sight]</description><Point><coordinates>121.5645,25.0339,0</coordinates></Point></Placemark>
@@ -23,11 +24,12 @@
     </Folder>
     <Folder><name>Kaohsiung 18–19 Nov</name>
       <Placemark><name>HSR Zuoying Station</name><description>[IDEA · transit] High-speed rail from Taipei Main Station takes about 1h35.</description><Point><coordinates>120.3081,22.6873,0</coordinates></Point></Placemark>
+      <Placemark><name>Just Inn Kaohsiung</name><description>[BOOKED · hotel] 18→19 Nov · Just Inn Suite · booking 1653718041333529 · check-in 15:00, out 11:00 · 8 min walk to Liuhe Night Market</description><Point><coordinates>120.2936,22.6338,0</coordinates></Point></Placemark>
       <Placemark><name>Lotus Pond, Dragon &amp; Tiger Pagodas</name><description>[IDEA · sight]</description><Point><coordinates>120.2944,22.6804,0</coordinates></Point></Placemark>
       <Placemark><name>Formosa Boulevard Station (Dome of Light)</name><description>[IDEA · sight]</description><Point><coordinates>120.302,22.6315,0</coordinates></Point></Placemark>
       <Placemark><name>Liuhe Night Market</name><description>[IDEA · food]</description><Point><coordinates>120.2995,22.6325,0</coordinates></Point></Placemark>
       <Placemark><name>Pier-2 Art Center</name><description>[IDEA · sight]</description><Point><coordinates>120.2817,22.62,0</coordinates></Point></Placemark>
-      <Placemark><name>Cijin Island (ferry from Gushan)</name><description>[IDEA · sight]</description><Point><coordinates>120.2665,22.6125,0</coordinates></Point></Placemark>
+      <Placemark><name>Kaohsiung Main Station (TRA)</name><description>[IDEA · transit] Express trains to Chiayi take about 1h–1h20.</description><Point><coordinates>120.3022,22.639,0</coordinates></Point></Placemark>
     </Folder>
     <Folder><name>Tokyo 22–24 Nov</name>
       <Placemark><name>Narita Airport (NRT), Terminal 2</name><description>[BOOKED · airport]</description><Point><coordinates>140.3864,35.7647,0</coordinates></Point></Placemark>
@@ -43,6 +45,7 @@
     <Folder><name>Hong Kong 24–25 Nov</name>
       <Placemark><name>Hong Kong Airport (HKG), Terminal 1</name><description>[BOOKED · airport]</description><Point><coordinates>113.9146,22.3134,0</coordinates></Point></Placemark>
       <Placemark><name>Airport Express · Hong Kong Station</name><description>[IDEA · transit] About 24 min to the airport.</description><Point><coordinates>114.1582,22.285,0</coordinates></Point></Placemark>
+      <Placemark><name>The Silveri Hong Kong – MGallery</name><description>[BOOKED · hotel] 24→25 Nov · Tung Chung, above Tung Chung MTR, 3 km from the airport · free airport shuttle · check-in 14:00 · +852 3602 8989</description><Point><coordinates>113.9415,22.2894,0</coordinates></Point></Placemark>
       <Placemark><name>Tim Ho Wan (IFC)</name><description>[IDEA · food]</description><Point><coordinates>114.158,22.2852,0</coordinates></Point></Placemark>
       <Placemark><name>Man Mo Temple</name><description>[IDEA · sight]</description><Point><coordinates>114.1501,22.284,0</coordinates></Point></Placemark>
       <Placemark><name>Victoria Peak (Peak Tram)</name><description>[IDEA · sight]</description><Point><coordinates>114.1497,22.271,0</coordinates></Point></Placemark>

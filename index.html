@@ -219,8 +219,10 @@ const NODE = code => code==="UNK" ? [23.4,124.4] : [C[code].lat,C[code].lng];
 
 /* ---------- map ---------- */
 const map = L.map("map",{zoomSnap:.25,minZoom:3,maxZoom:18,worldCopyJump:true,attributionControl:true});
-const baseMap = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}",{maxZoom:19,attribution:"Map &copy; Esri, HERE, Garmin, &copy; OpenStreetMap contributors"}).addTo(map);
-const satMap = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",{maxZoom:19,attribution:"Imagery &copy; Esri, Maxar, Earthstar Geographics"});
+const topo = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}",{maxZoom:10,attribution:"Map &copy; Esri, HERE, Garmin"});
+const streets = L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png",{minZoom:11,maxZoom:19,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'});
+const baseMap = L.layerGroup([topo,streets]).addTo(map);
+const satMap = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",{maxZoom:19,maxNativeZoom:17,attribution:"Imagery &copy; Esri, Maxar, Earthstar Geographics"});
 function setLayer(sat){
   if(sat){map.removeLayer(baseMap);satMap.addTo(map);}else{map.removeLayer(satMap);baseMap.addTo(map);}
   $("#map").className=sat?"sat":"warm"; $("#lyMap").setAttribute("aria-pressed",String(!sat)); $("#lySat").setAttribute("aria-pressed",String(sat));
@@ -379,7 +381,7 @@ function renderLog(){
   $("#log").querySelectorAll("input[data-k]").forEach(inp=>inp.onchange=()=>{done[inp.dataset.k]=inp.checked;store.set("aq-done",done);inp.closest(".stop").classList.toggle("done",inp.checked);renderXP();});
   $("#log").querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>{const id=b.dataset.go,p=P[id];state.hl=id;
     if(C[p.city])state.city=p.city; state.view="city";
-    map.flyTo([p.lat,p.lng],Math.max(map.getZoom(),15),{duration:1.2}); map.once("moveend",()=>{drawPins();});
+    map.flyTo([p.lat,p.lng],Math.max(map.getZoom(),16),{duration:1.2}); map.once("moveend",()=>{drawPins();});
     document.getElementById("stage").scrollIntoView({block:"nearest",behavior:"smooth"});});
 }
 function renderXP(){

@@ -212,7 +212,9 @@ let done = store.get("aq-done",{});
 let state = {day:"all", view:"world", city:null, hl:null, filter:"all"};
 
 /* where each city medallion sits; the secret level floats off Taiwan's east coast so it doesn't cover Taipei */
-const NODE = code => code==="UNK" ? [124.4,23.4] : [C[code].lng,C[code].lat];  /* [lng,lat] */
+/* world-map medallion spots [lng,lat]; Taiwan's four levels fan out around the island so they don't overlap */
+const NODE_POS = {TPE:[122.9,25.9], KHH:[119.2,22.2], ALI:[118.9,24.1], UNK:[123.9,23.0]};
+const NODE = code => NODE_POS[code] || [C[code].lng,C[code].lat];
 
 /* ---------- map (MapLibre GL, OpenFreeMap vector tiles) ---------- */
 const map = new maplibregl.Map({container:"map", style:"https://tiles.openfreemap.org/styles/liberty", center:[125,29], zoom:3.6, attributionControl:{compact:true}, maxPitch:70});

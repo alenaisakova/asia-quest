@@ -213,7 +213,8 @@ let state = {day:"all", view:"world", city:null, hl:null, filter:"all"};
 
 /* where each city medallion sits; the secret level floats off Taiwan's east coast so it doesn't cover Taipei */
 /* world-map medallion spots [lng,lat]; Taiwan's four levels fan out around the island so they don't overlap */
-const NODE_POS = {TPE:[122.9,25.9], KHH:[119.2,22.2], ALI:[118.9,24.1], UNK:[123.9,23.0]};
+const NODE_POS = {UNK:[121.75,23.55]};
+const TW=["TPE","KHH","ALI","UNK"], TW_ZOOM=6.2;
 const NODE = code => NODE_POS[code] || [C[code].lng,C[code].lat];
 
 /* ---------- map (MapLibre GL, OpenFreeMap vector tiles) ---------- */
@@ -314,7 +315,14 @@ function drawRoutes(){
 function drawCities(){
   clear("cities");
   if(map.getZoom()>=PIN_ZOOM)return;
+  const z=map.getZoom(), grouped=z<TW_ZOOM;
+  if(grouped){
+    const on=state.day!=="all"&&TW.includes(TRIP.days[state.day-1].city);
+    const html=`<button class="city${on?" on":""}" aria-label="Taiwan, 15 to 22 November. Zoom in"><span class="medal" style="background:${C.TPE.color};font-size:15px">2–5</span><span class="nm">Taiwan</span><span class="dt">15–22 Nov</span></button>`;
+    markers.cities.push(htmlMarker(html,[120.95,23.7],"top",()=>{state.view="world";map.fitBounds(boundsOf(TW.map(NODE)),{padding:80,duration:1400});},[0,-24]));
+  }
   Object.entries(C).forEach(([code,c])=>{
+    if(grouped&&TW.includes(code))return;
     const on=state.day!=="all"&&TRIP.days[state.day-1].city===code;
     const html=`<button class="city${c.secret?" secret":""}${on?" on":""}" aria-label="${esc(c.name)}, ${c.dates}. Zoom in"><span class="medal" style="background:${c.color}">${c.secret?"?":c.level}</span><span class="nm">${esc(c.name)}</span><span class="dt">${c.dates}</span></button>`;
     markers.cities.push(htmlMarker(html,NODE(code),"top",()=>openCity(code),[0,-24]));
@@ -339,7 +347,8 @@ function drawPins(){
   });
 }
 let lastSide=null;
-map.on("zoomend",()=>{const side=map.getZoom()>=PIN_ZOOM; if(side!==lastSide){lastSide=side;drawCities();drawPins();} updateHead();});
+let lastTw=null;
+map.on("zoomend",()=>{const z=map.getZoom(),side=z>=PIN_ZOOM,tw=z<TW_ZOOM; if(side!==lastSide||tw!==lastTw){lastSide=side;lastTw=tw;drawCities();drawPins();} updateHead();});
 
 /* ---------- views ---------- */
 function boundsOf(pts){const b=new maplibregl.LngLatBounds(); pts.forEach(p=>b.extend(p)); return b;}

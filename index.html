@@ -232,7 +232,7 @@ const NODE = code => NODE_POS[code] || [C[code].lng,C[code].lat];
 /* ---------- map (MapLibre GL, OpenFreeMap vector tiles) ---------- */
 const map = new maplibregl.Map({container:"map", style:"https://tiles.openfreemap.org/styles/liberty", center:[125,29], zoom:3.6, attributionControl:{compact:true}, maxPitch:70});
 map.addControl(new maplibregl.NavigationControl({visualizePitch:true}),"top-left");
-const PIN_ZOOM=8.5;
+const PIN_ZOOM=7.6;
 
 /* recolour the base map into the golden-hour palette */
 function warmStyle(){

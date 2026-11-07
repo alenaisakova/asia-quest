@@ -140,11 +140,16 @@ textarea{width:100%;height:80px;background:rgba(0,0,0,.25);color:var(--muted);bo
 .ftab[aria-selected="true"]{background:linear-gradient(180deg,#b8322a,#8e2620);color:#ffe3a0;border-color:var(--edge)}
 .ftab[aria-selected="true"] .zh{color:#ffe3a0}
 .fbody{display:grid;gap:12px}
-.sub{white-space:nowrap;width:max-content;font-family:var(--display);font-weight:700;font-size:16px;margin:4px 0 0;padding:3px 10px;border-radius:8px;justify-self:start}
+.sub{white-space:nowrap;font-family:var(--display);font-weight:700;font-size:16px;margin:4px 0 0;padding:3px 10px;border-radius:8px;justify-self:start}
 .sub.main{background:rgba(242,193,78,.18);color:var(--sky1)}
 .sub.side{background:rgba(127,214,208,.12);color:var(--idea)}
 .alert.inlog{font-size:14px;padding:6px 8px;border-radius:10px;background:rgba(232,72,59,.12)}
 .emptyf{color:var(--muted);font-style:italic;font-size:14px}
+.log,.fbody,.dayc{grid-template-columns:minmax(0,1fr)}
+.log>*,.fbody>*,.dayc>*{min-width:0}
+.ftab{min-width:0;overflow-wrap:anywhere}
+.stop .nt,.stop .tx{overflow-wrap:anywhere}
+.lower.solo{grid-template-columns:1fr}
 </style>
 </head>
 <body>
@@ -187,8 +192,8 @@ textarea{width:100%;height:80px;background:rgba(0,0,0,.25);color:var(--muted);bo
     <section class="log glass" id="log" aria-label="Quest log"></section>
   </div>
 
-  <div class="lower">
-    <section class="panelp glass" aria-label="Alerts">
+  <div class="lower" id="lower">
+    <section class="panelp glass" aria-label="Alerts" id="alertsPanel">
       <h2>Boss alerts</h2>
       <div id="alerts" style="display:grid;gap:10px"></div>
     </section>
@@ -387,7 +392,8 @@ function updateHead(){
 }
 
 /* ---------- side panels ---------- */
-function renderLevels(){
+function showAlerts(){ const all=state.day==="all"; $("#alertsPanel").style.display=all?"":"none"; $("#lower").classList.toggle("solo",!all); }
+function renderLevels(){ showAlerts();
   const el=$("#levels"); el.innerHTML="";
   const mk=(key,top,sub,col,blank)=>{const b=document.createElement("button");b.className="lv"+(blank?" blank":"");b.setAttribute("aria-pressed",String(state.day===key));
     b.innerHTML=`<span class="d">${top}</span><span class="c">${sub}</span><span class="bar" style="background:${col}"></span>`;
@@ -434,8 +440,6 @@ function renderLog(){
             (side.length?`<div class="sub side">✦ Side quests · if there's time</div>`+side.map(o=>stopHTML(d,o.s,o.i)).join(""):"");
     } else {
       inner=items.map(o=>stopHTML(d,o.s,o.i)).join("");
-      if(state.tab==="book"){const al=TRIP.alerts.filter(a=>a.day===d.n&&a.lvl!=="ok");
-        inner+=al.map(a=>`<div class="alert inlog"><span class="lvl ${a.lvl}">${{boss:"BOSS",warn:"WARNING",info:"INFO"}[a.lvl]}</span><span>${esc(a.text)}</span></div>`).join("");}
     }
     if(!inner) inner=`<div class="emptyf">Nothing here for this day yet.</div>`;
     if(state.day==="all"&&!d.blank&&!items.length) return "";

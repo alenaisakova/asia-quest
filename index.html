@@ -165,7 +165,7 @@ textarea{width:100%;height:80px;background:rgba(0,0,0,.25);color:var(--muted);bo
       <div class="maphead" id="filters" style="padding-top:0"></div>
       <div class="stage" id="stage">
         <div id="map" class="warm"></div>
-        <div class="layerbtn"><button id="lyMap" aria-pressed="true">Map</button><button id="lySat" aria-pressed="false">Satellite</button></div>
+        <div class="layerbtn"><button id="ly_map" aria-pressed="true">Map</button><button id="ly_terrain" aria-pressed="false">Terrain</button><button id="ly_sat" aria-pressed="false">Satellite</button></div>
       </div>
       <div class="legend">
         <span><i class="sw" style="background:var(--booked)"></i>Booked</span>
@@ -219,15 +219,18 @@ const NODE = code => code==="UNK" ? [23.4,124.4] : [C[code].lat,C[code].lng];
 
 /* ---------- map ---------- */
 const map = L.map("map",{zoomSnap:.25,minZoom:3,maxZoom:18,worldCopyJump:true,attributionControl:true});
-const topo = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}",{maxZoom:10,attribution:"Map &copy; Esri, HERE, Garmin"});
-const streets = L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png",{minZoom:11,maxZoom:19,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'});
-const baseMap = L.layerGroup([topo,streets]).addTo(map);
-const satMap = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",{maxZoom:19,maxNativeZoom:17,attribution:"Imagery &copy; Esri, Maxar, Earthstar Geographics"});
-function setLayer(sat){
-  if(sat){map.removeLayer(baseMap);satMap.addTo(map);}else{map.removeLayer(satMap);baseMap.addTo(map);}
-  $("#map").className=sat?"sat":"warm"; $("#lyMap").setAttribute("aria-pressed",String(!sat)); $("#lySat").setAttribute("aria-pressed",String(sat));
+const LAYERS = {
+  map: L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}),
+  terrain: L.tileLayer("https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png",{subdomains:"abc",maxZoom:17,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, SRTM · style &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (CC-BY-SA)'}),
+  sat: L.tileLayer("https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2020_3857/default/g/{z}/{y}/{x}.jpg",{maxZoom:19,maxNativeZoom:14,attribution:'<a href="https://s2maps.eu">Sentinel-2 cloudless</a> by EOX IT Services GmbH (contains modified Copernicus Sentinel data 2020)'})
+};
+let curLayer="map"; LAYERS.map.addTo(map);
+function setLayer(k){
+  map.removeLayer(LAYERS[curLayer]); LAYERS[k].addTo(map); curLayer=k;
+  $("#map").className=k==="sat"?"sat":"warm";
+  ["map","terrain","sat"].forEach(n=>$("#ly_"+n).setAttribute("aria-pressed",String(n===k)));
 }
-$("#lyMap").onclick=()=>setLayer(false); $("#lySat").onclick=()=>setLayer(true);
+["map","terrain","sat"].forEach(n=>$("#ly_"+n).onclick=()=>setLayer(n));
 
 const routeLayer=L.layerGroup().addTo(map), cityLayer=L.layerGroup().addTo(map), pinLayer=L.layerGroup().addTo(map), shipLayer=L.layerGroup().addTo(map);
 const PIN_ZOOM=8.5;

@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Nunito:wght@500;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
 <style>
 /* Layout: golden-hour adventure. Sunset sky page, warm glass panels; HUD, level strip, painted map + quest log, alerts + Maps folder. Single warm theme. */
 :root{
@@ -119,22 +119,18 @@ textarea{width:100%;height:80px;background:rgba(0,0,0,.25);color:var(--muted);bo
 .stage{aspect-ratio:16/10;min-height:360px}
 .stage::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:500;border-radius:12px;
   background:radial-gradient(ellipse at 80% 0%,rgba(255,190,120,.28),rgba(255,190,120,0) 55%),radial-gradient(ellipse at center,rgba(0,0,0,0) 55%,rgba(40,10,20,.35) 100%)}
-.warm .leaflet-tile-pane{filter:sepia(.45) saturate(1.45) hue-rotate(-14deg) contrast(1.04) brightness(1.02)}
-.sat .leaflet-tile-pane{filter:sepia(.18) saturate(1.15) brightness(1.05)}
-.leaflet-div-icon{background:none;border:0}
+.warm canvas{filter:sepia(.12) saturate(1.08)}
 .pin,.city{position:static;transform:none;width:max-content;white-space:nowrap}
 .city .dt,.pin .tip{white-space:nowrap}
-.mk-pin{transform:translate(-50%,-100%);display:inline-flex}
-.mk-city{transform:translate(-50%,-50%);display:inline-flex}
-.mk-note{transform:translate(-50%,-50%);display:inline-flex}
-.ship-ic{width:64px;height:56px;margin:-48px 0 0 -32px;filter:drop-shadow(0 6px 6px rgba(40,10,20,.45))}
-.leaflet-control-attribution{font-size:10px;background:rgba(46,24,30,.75)!important;color:var(--muted)!important}
-.leaflet-control-attribution a{color:var(--sky1)!important;font-weight:400}
-.leaflet-bar a{background:rgba(46,24,30,.9)!important;color:var(--text)!important;border-color:rgba(255,207,138,.3)!important}
 .layerbtn{position:absolute;right:10px;top:10px;z-index:600;display:flex;gap:6px}
 .layerbtn button{background:rgba(46,24,30,.88);border:1.5px solid rgba(255,207,138,.35);border-radius:99px;padding:4px 12px;font-size:13px;font-weight:800}
 .layerbtn button[aria-pressed="true"]{background:var(--sky1);color:#3a1a24}
-.aq-pop .leaflet-popup-content-wrapper,.aq-pop .leaflet-popup-tip{background:rgba(46,24,30,.95);color:var(--text);border:1px solid rgba(255,207,138,.4)}
+.aq-pop .maplibregl-popup-content{background:rgba(46,24,30,.95);color:var(--text);border:1px solid rgba(255,207,138,.4);border-radius:12px;font-family:var(--body)}
+.aq-pop .maplibregl-popup-tip{border-top-color:rgba(46,24,30,.95)!important}
+.aq-pop .maplibregl-popup-close-button{color:var(--text)}
+.maplibregl-ctrl-attrib{font-size:10px}
+.maplibregl-marker .pin,.maplibregl-marker .city{cursor:pointer}
+.ship-ic{width:64px;height:56px;filter:drop-shadow(0 6px 6px rgba(40,10,20,.45))}
 .aq-pop a{color:var(--sky1)}
 </style>
 </head>
@@ -165,13 +161,13 @@ textarea{width:100%;height:80px;background:rgba(0,0,0,.25);color:var(--muted);bo
       <div class="maphead" id="filters" style="padding-top:0"></div>
       <div class="stage" id="stage">
         <div id="map" class="warm"></div>
-        <div class="layerbtn"><button id="ly_map" aria-pressed="true">Map</button><button id="ly_terrain" aria-pressed="false">Terrain</button><button id="ly_sat" aria-pressed="false">Satellite</button></div>
+        <div class="layerbtn"><button id="ly_map" aria-pressed="true">Map</button><button id="ly_sat" aria-pressed="false">Satellite</button><button id="ly_3d" aria-pressed="false">3D</button></div>
       </div>
       <div class="legend">
         <span><i class="sw" style="background:var(--booked)"></i>Booked</span>
         <span><i class="sw" style="background:var(--idea)"></i>Idea</span>
         <span><i class="sw" style="background:var(--missing)"></i>Missing</span>
-        <span>H inn · A airport · F food · S sight · T transit · scroll or pinch to zoom</span>
+        <span>H inn · A airport · F food · S sight · T transit · scroll or pinch to zoom · right-drag or 3D to tilt</span>
       </div>
     </section>
 
@@ -200,7 +196,7 @@ textarea{width:100%;height:80px;background:rgba(0,0,0,.25);color:var(--muted);bo
   </div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
 <script>
 const TRIP = {"cities": {"SHA": {"name": "Shanghai", "label": "SHANGHAI", "lat": 31.23, "lng": 121.47, "color": "#b48cff", "level": 1, "dates": "14–15 Nov", "subtitle": "All-nighter level: no hotel"}, "TPE": {"name": "Taipei", "label": "TAIPEI", "lat": 25.04, "lng": 121.53, "color": "#4fd1a5", "level": 2, "dates": "15–18 Nov", "subtitle": "City of night markets"}, "KHH": {"name": "Kaohsiung", "label": "KAOHSIUNG", "lat": 22.63, "lng": 120.3, "color": "#5cc8ff", "level": 3, "dates": "18–19 Nov", "subtitle": "Harbour city"}, "UNK": {"name": "Secret level", "label": "???", "lat": 23.75, "lng": 121.05, "color": "#9aa3c4", "level": 4, "dates": "19–22 Nov", "subtitle": "Not planned yet", "secret": true}, "TYO": {"name": "Tokyo", "label": "TOKYO", "lat": 35.68, "lng": 139.76, "color": "#ff8fab", "level": 5, "dates": "22–24 Nov", "subtitle": "Two inns, one early flight"}, "HKG": {"name": "Hong Kong", "label": "HONG KONG", "lat": 22.3, "lng": 114.17, "color": "#ffb347", "level": 6, "dates": "24–25 Nov", "subtitle": "Final boss: 06:10 airport"}}, "places": {"svo": {"city": "MOW", "type": "airport", "name": "Sheremetyevo Airport (SVO), Terminal C", "lat": 55.9726, "lng": 37.4146, "status": "booked", "q": "Sheremetyevo Airport Terminal C"}, "pvg": {"city": "SHA", "type": "airport", "name": "Shanghai Pudong Airport (PVG), Terminal 2", "lat": 31.1504, "lng": 121.8045, "status": "booked", "q": "Shanghai Pudong International Airport Terminal 2", "far": true}, "tpe": {"city": "TPE", "type": "airport", "name": "Taoyuan Airport (TPE), Terminal 1", "lat": 25.0777, "lng": 121.2328, "status": "booked", "q": "Taiwan Taoyuan International Airport Terminal 1", "far": true}, "tpe_inn": {"city": "TPE", "type": "hotel", "name": "Taipei hotel (15→18 Nov)", "lat": 25.046, "lng": 121.52, "status": "missing", "q": "hotels Taipei Main Station", "note": "Not sent yet. Add it and the pin moves to the real address."}, "tpe_main": {"city": "TPE", "type": "transit", "name": "Taipei Main Station", "lat": 25.0478, "lng": 121.517, "status": "idea", "q": "Taipei Main Station", "note": "Airport MRT from Taoyuan (about 40 min) and the high-speed rail to Kaohsiung both start here."}, "ximen": {"city": "TPE", "type": "sight", "name": "Ximending", "lat": 25.0422, "lng": 121.5068, "status": "idea", "q": "Ximending Taipei"}, "t101": {"city": "TPE", "type": "sight", "name": "Taipei 101 Observatory", "lat": 25.0339, "lng": 121.5645, "status": "idea", "q": "Taipei 101 Observatory"}, "elephant": {"city": "TPE", "type": "sight", "name": "Elephant Mountain trail", "lat": 25.0273, "lng": 121.5706, "status": "idea", "q": "Elephant Mountain Hiking Trail Taipei", "note": "Short steep climb; best view of 101 at sunset (around 17:05 in late November)."}, "raohe": {"city": "TPE", "type": "food", "name": "Raohe Night Market", "lat": 25.0509, "lng": 121.5775, "status": "idea", "q": "Raohe Street Night Market"}, "longshan": {"city": "TPE", "type": "sight", "name": "Longshan Temple", "lat": 25.0372, "lng": 121.4999, "status": "idea", "q": "Bangka Lungshan Temple"}, "cks": {"city": "TPE", "type": "sight", "name": "Chiang Kai-shek Memorial Hall", "lat": 25.0346, "lng": 121.5219, "status": "idea", "q": "Chiang Kai-shek Memorial Hall"}, "dtf": {"city": "TPE", "type": "food", "name": "Din Tai Fung (Xinyi Rd)", "lat": 25.0334, "lng": 121.53, "status": "idea", "q": "Din Tai Fung Xinyi Road Taipei", "note": "The original branch, on Yongkang Street's corner. Take a queue number, then wander."}, "jiufen": {"city": "TPE", "type": "sight", "name": "Jiufen Old Street", "lat": 25.1092, "lng": 121.8448, "status": "idea", "q": "Jiufen Old Street", "far": true, "note": "About 1 hour by bus from Zhongxiao Fuxing. Prettiest at dusk."}, "zuoying": {"city": "KHH", "type": "transit", "name": "HSR Zuoying Station", "lat": 22.6873, "lng": 120.3081, "status": "idea", "q": "THSR Zuoying Station Kaohsiung", "note": "High-speed rail from Taipei Main Station takes about 1h35."}, "khh_inn": {"city": "KHH", "type": "hotel", "name": "Kaohsiung hotel (18→19 Nov)", "lat": 22.628, "lng": 120.301, "status": "missing", "q": "hotels Formosa Boulevard Kaohsiung", "note": "Not sent yet."}, "lotus": {"city": "KHH", "type": "sight", "name": "Lotus Pond, Dragon & Tiger Pagodas", "lat": 22.6804, "lng": 120.2944, "status": "idea", "q": "Dragon and Tiger Pagodas Kaohsiung"}, "formosa": {"city": "KHH", "type": "sight", "name": "Formosa Boulevard Station (Dome of Light)", "lat": 22.6315, "lng": 120.302, "status": "idea", "q": "Formosa Boulevard Station Dome of Light"}, "liuhe": {"city": "KHH", "type": "food", "name": "Liuhe Night Market", "lat": 22.6325, "lng": 120.2995, "status": "idea", "q": "Liuhe Night Market Kaohsiung"}, "pier2": {"city": "KHH", "type": "sight", "name": "Pier-2 Art Center", "lat": 22.62, "lng": 120.2817, "status": "idea", "q": "Pier-2 Art Center Kaohsiung"}, "cijin": {"city": "KHH", "type": "sight", "name": "Cijin Island (ferry from Gushan)", "lat": 22.6125, "lng": 120.2665, "status": "idea", "q": "Cijin Island Kaohsiung"}, "unk_inn": {"city": "UNK", "type": "hotel", "name": "Hotels 19→22 Nov", "lat": 23.75, "lng": 121.05, "status": "missing", "q": "Taiwan", "note": "Blank level. Fill it in and it unlocks on the map."}, "nrt": {"city": "TYO", "type": "airport", "name": "Narita Airport (NRT), Terminal 2", "lat": 35.7647, "lng": 140.3864, "status": "booked", "q": "Narita International Airport Terminal 2", "far": true}, "hanzomon": {"city": "TYO", "type": "hotel", "name": "Hotel Grand Arc Hanzomon", "lat": 35.682991, "lng": 139.7434, "status": "booked", "q": "Hotel Grand Arc Hanzomon, 1-1 Hayabusacho, Chiyoda City, Tokyo", "note": "22→23 Nov · check-in 14:00, out 10:00 · booking 1653718122516266 · free cancel until 21 Nov 23:59 · +81 3 3288 0111"}, "chidori": {"city": "TYO", "type": "sight", "name": "Chidorigafuchi moat walk", "lat": 35.6915, "lng": 139.7447, "status": "idea", "q": "Chidorigafuchi Tokyo", "note": "5 min from the hotel. Easy morning walk before check-out."}, "tsukiji": {"city": "TYO", "type": "food", "name": "Tsukiji Outer Market", "lat": 35.6654, "lng": 139.7707, "status": "idea", "q": "Tsukiji Outer Market"}, "sensoji": {"city": "TYO", "type": "sight", "name": "Senso-ji, Asakusa", "lat": 35.7148, "lng": 139.7967, "status": "idea", "q": "Senso-ji Temple"}, "shibuya": {"city": "TYO", "type": "sight", "name": "Shibuya Crossing", "lat": 35.6595, "lng": 139.7005, "status": "idea", "q": "Shibuya Scramble Crossing"}, "kamata": {"city": "TYO", "type": "hotel", "name": "Tokyu Stay Kamata – Tokyo Haneda", "lat": 35.560824, "lng": 139.721514, "status": "booked", "q": "Tokyu Stay Kamata, 4-23-1 Kamata, Ota City, Tokyo", "note": "23→24 Nov · check-in 15:00, out 11:00 · booking 1653718122460473 · free cancel until 22 Nov 23:59 · +81 3 5714 1090"}, "nihao": {"city": "TYO", "type": "food", "name": "Kamata gyoza (Nihao)", "lat": 35.5615, "lng": 139.7155, "status": "idea", "q": "Nihao gyoza Kamata", "note": "Kamata is famous for crispy-winged gyoza. Early dinner, early bed."}, "hnd": {"city": "TYO", "type": "airport", "name": "Haneda Airport (HND), Terminal 3", "lat": 35.544, "lng": 139.7684, "status": "booked", "q": "Haneda Airport Terminal 3"}, "hkg": {"city": "HKG", "type": "airport", "name": "Hong Kong Airport (HKG), Terminal 1", "lat": 22.3134, "lng": 113.9146, "status": "booked", "q": "Hong Kong International Airport Terminal 1", "far": true}, "hk_station": {"city": "HKG", "type": "transit", "name": "Airport Express · Hong Kong Station", "lat": 22.285, "lng": 114.1582, "status": "idea", "q": "Hong Kong Station Airport Express", "note": "About 24 min to the airport."}, "hk_inn": {"city": "HKG", "type": "hotel", "name": "Hong Kong hotel (24→25 Nov)", "lat": 22.296, "lng": 114.168, "status": "missing", "q": "hotels Tsim Sha Tsui", "note": "Not sent yet. Pick one close to an Airport Express station for the 06:10 airport run."}, "timhowan": {"city": "HKG", "type": "food", "name": "Tim Ho Wan (IFC)", "lat": 22.2852, "lng": 114.158, "status": "idea", "q": "Tim Ho Wan IFC Hong Kong Station"}, "manmo": {"city": "HKG", "type": "sight", "name": "Man Mo Temple", "lat": 22.284, "lng": 114.1501, "status": "idea", "q": "Man Mo Temple Hong Kong"}, "peak": {"city": "HKG", "type": "sight", "name": "Victoria Peak (Peak Tram)", "lat": 22.271, "lng": 114.1497, "status": "idea", "q": "Victoria Peak Sky Terrace 428"}, "starferry": {"city": "HKG", "type": "transit", "name": "Star Ferry (Central → Tsim Sha Tsui)", "lat": 22.2869, "lng": 114.1617, "status": "idea", "q": "Star Ferry Central Pier"}, "tst": {"city": "HKG", "type": "sight", "name": "TST Promenade · Symphony of Lights 20:00", "lat": 22.2932, "lng": 114.174, "status": "idea", "q": "Tsim Sha Tsui Promenade"}, "templest": {"city": "HKG", "type": "food", "name": "Temple Street Night Market", "lat": 22.3059, "lng": 114.17, "status": "idea", "q": "Temple Street Night Market"}, "pkx": {"city": "PEK", "type": "airport", "name": "Beijing Daxing Airport (PKX)", "lat": 39.5098, "lng": 116.4105, "status": "booked", "q": "Beijing Daxing International Airport"}, "ins": {"city": "SHA", "type": "sight", "name": "INS New Paradise (Fuxing Park)", "lat": 31.2187, "lng": 121.4703, "status": "booked", "q": "INS Fuxing Park, 109 Yandang Road, Huangpu, Shanghai", "note": "Your pick. 6 floors of clubs and bars at 109 Yandang Rd (雁荡路109号), inside Fuxing Park. Park gates shut at 21:00, so go in on the Yandang Rd side."}, "xintiandi": {"city": "SHA", "type": "sight", "name": "Xintiandi & Sinan Mansions night walk", "lat": 31.2196, "lng": 121.4749, "status": "idea", "q": "Xintiandi Shanghai", "note": "Next door to INS. Quiet, lit-up old shikumen lanes after the clubs."}, "bund": {"city": "SHA", "type": "sight", "name": "The Bund at dawn", "lat": 31.24, "lng": 121.4903, "status": "idea", "q": "The Bund Shanghai", "note": "Pudong skyline across the river. First light around 06:00."}, "sha_food": {"city": "SHA", "type": "food", "name": "Late-night food near Xintiandi", "lat": 31.2165, "lng": 121.477, "status": "idea", "q": "24 hour restaurant Xintiandi Shanghai", "note": "Soup dumplings or noodles to refuel before the airport run."}}, "flights": [{"id": "f1", "day": 1, "from": "svo", "to": "pvg", "code": "SU206", "airline": "Aeroflot", "dep": "09:05", "arr": "23:05", "ref": "PNR D7S29K", "bag": "23 kg checked"}, {"id": "f2", "day": 2, "from": "pvg", "to": "tpe", "code": "HO1309", "airline": "Juneyao Air", "dep": "09:35", "arr": "11:35", "ref": "PNR PBND9L", "bag": "23 kg checked + 5 kg cabin"}, {"id": "f3", "day": 9, "from": "tpe", "to": "nrt", "code": "IT202", "airline": "Tigerair Taiwan", "dep": "15:35", "arr": "19:35", "ref": "PNR P37CXL", "bag": "NO checked bag · 10 kg cabin total", "warn": true}, {"id": "f4", "day": 11, "from": "hnd", "to": "hkg", "code": "UO625", "airline": "HK Express", "dep": "06:35", "arr": "10:50", "ref": "PNR M9WW7G", "bag": "ONLY 7 kg personal item · no cabin, no checked", "warn": true}, {"id": "f5", "day": 12, "from": "hkg", "to": "pkx", "code": "CZ5010", "airline": "China Southern", "dep": "08:10", "arr": "11:25", "ref": "PNR JHYT1K"}, {"id": "f6", "day": 12, "from": "pkx", "to": "svo", "code": "CZ341", "airline": "China Southern", "dep": "13:00", "arr": "16:40", "ref": "PNR JHYT1K"}], "days": [{"n": 1, "date": "Sat 14 Nov", "city": "SHA", "title": "Moscow → Shanghai all-nighter", "stops": [{"t": "06:05", "p": "svo", "x": "Be at Sheremetyevo, Terminal C"}, {"t": "09:05", "f": "f1"}, {"t": "in flight", "x": "Fill in China's online Arrival Card and save the QR code", "task": true}, {"t": "23:05", "p": "pvg", "x": "Land at Pudong T2"}, {"t": "23:45", "x": "Taxi / DiDi to the city (about 50 min). Metro and Maglev have stopped by the time you land.", "task": true}]}, {"n": 2, "date": "Sun 15 Nov", "city": "SHA", "title": "Shanghai night → Taipei", "stops": [{"t": "00:45", "p": "ins"}, {"t": "03:30", "p": "xintiandi"}, {"t": "04:30", "p": "sha_food"}, {"t": "05:15", "p": "bund"}, {"t": "05:45", "x": "Taxi to Pudong T2 (about 45 min)", "task": true}, {"t": "06:35", "p": "pvg", "x": "At Pudong T2 (3 h before, per Trip.com)"}, {"t": "09:35", "f": "f2"}, {"t": "12:30", "p": "tpe_main", "x": "Airport MRT into the city"}, {"t": "check-in", "p": "tpe_inn"}, {"t": "evening", "p": "ximen", "x": "Easy evening after no sleep"}]}, {"n": 3, "date": "Mon 16 Nov", "city": "TPE", "title": "Xinyi: towers & night market", "stops": [{"t": "14:00", "p": "t101"}, {"t": "16:15", "p": "elephant"}, {"t": "19:00", "p": "raohe"}]}, {"n": 4, "date": "Tue 17 Nov", "city": "TPE", "title": "Old Taipei", "stops": [{"t": "10:00", "p": "longshan"}, {"t": "12:00", "p": "cks"}, {"t": "13:30", "p": "dtf"}, {"t": "16:00", "p": "jiufen", "x": "Optional: Jiufen at dusk"}]}, {"n": 5, "date": "Wed 18 Nov", "city": "KHH", "title": "Taipei → Kaohsiung", "stops": [{"t": "morning", "p": "tpe_main", "x": "High-speed rail south"}, {"t": "~1h35", "p": "zuoying"}, {"t": "afternoon", "p": "lotus"}, {"t": "check-in", "p": "khh_inn"}, {"t": "evening", "p": "formosa"}, {"t": "19:00", "p": "liuhe"}]}, {"n": 6, "date": "Thu 19 Nov", "city": "KHH", "title": "Kaohsiung → ???", "stops": [{"t": "morning", "p": "pier2"}, {"t": "late morning", "p": "cijin"}, {"t": "then", "p": "unk_inn", "x": "Where next? Not planned yet"}]}, {"n": 7, "date": "Fri 20 Nov", "city": "UNK", "title": "Secret level", "blank": true, "stops": []}, {"n": 8, "date": "Sat 21 Nov", "city": "UNK", "title": "Secret level", "blank": true, "stops": []}, {"n": 9, "date": "Sun 22 Nov", "city": "TYO", "title": "Taiwan → Tokyo", "stops": [{"t": "12:35", "p": "tpe", "x": "At Taoyuan T1 (3 h before)"}, {"t": "15:35", "f": "f3"}, {"t": "19:35", "p": "nrt", "x": "Land at Narita T2, about 1.5 h to the hotel"}, {"t": "21:30", "p": "hanzomon"}]}, {"n": 10, "date": "Mon 23 Nov", "city": "TYO", "title": "Tokyo day (public holiday)", "stops": [{"t": "08:00", "p": "chidori"}, {"t": "10:00", "p": "hanzomon", "x": "Check out by 10:00"}, {"t": "11:00", "p": "tsukiji"}, {"t": "13:30", "p": "sensoji"}, {"t": "17:00", "p": "shibuya"}, {"t": "19:30", "p": "kamata", "x": "Check in (from 15:00)"}, {"t": "20:00", "p": "nihao"}]}, {"n": 11, "date": "Tue 24 Nov", "city": "HKG", "title": "Tokyo → Hong Kong", "stops": [{"t": "04:30", "x": "Taxi Kamata → Haneda T3 (about 15 min). Trains may not run this early.", "task": true}, {"t": "06:35", "f": "f4"}, {"t": "10:50", "p": "hkg", "x": "Land at HKG T1"}, {"t": "12:00", "p": "hk_station", "x": "Airport Express into town"}, {"t": "12:15", "p": "timhowan"}, {"t": "14:00", "p": "manmo"}, {"t": "16:00", "p": "peak", "x": "Sunset around 17:40"}, {"t": "19:00", "p": "starferry"}, {"t": "20:00", "p": "tst"}, {"t": "21:00", "p": "templest"}, {"t": "night", "p": "hk_inn"}]}, {"n": 12, "date": "Wed 25 Nov", "city": "HKG", "title": "Home: Hong Kong → Beijing → Moscow", "stops": [{"t": "06:10", "p": "hkg", "x": "At HKG T1, 2 h before"}, {"t": "08:10", "f": "f5"}, {"t": "11:25", "p": "pkx", "x": "1 h 35 min to connect. Same booking, so bags go through"}, {"t": "13:00", "f": "f6"}, {"t": "16:40", "p": "svo", "x": "Home. Quest complete"}]}], "alerts": [{"lvl": "boss", "day": 9, "text": "Tigerair IT202: no checked bag included, 10 kg cabin total. Buy baggage online before 22 Nov."}, {"lvl": "boss", "day": 11, "text": "HK Express UO625: only one 7 kg personal item. No cabin bag, no checked bag. Add baggage before 24 Nov."}, {"lvl": "warn", "day": 1, "text": "China Arrival Card: fill it in online before landing at Pudong and keep the QR code on your phone."}, {"lvl": "warn", "day": 1, "text": "No hotel in Shanghai: you'll carry your bags all night. Check left-luggage at Pudong T2 before heading into town."}, {"lvl": "warn", "day": 12, "text": "Beijing Daxing: 1 h 35 min connection to Moscow. Move fast after landing."}, {"lvl": "warn", "day": 9, "text": "Japan: Trip.com flags that a visa or extra documents are required. Check yours."}, {"lvl": "info", "day": 1, "text": "Old route: Moscow → Istanbul ticket for 14 Nov (Kupibilet 2684477961). Turkish cancelled the Istanbul → Taipei leg (TK0124). Ask about a refund."}, {"lvl": "ok", "day": 2, "text": "Taiwan eVisa approved (application 64D55033MU9QO8GX)."}]};
 const KML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<kml xmlns=\"http://www.opengis.net/kml/2.2\">\n  <Document>\n    <name>Asia Quest 14–25 Nov 2026</name>\n    <Folder><name>Shanghai 14–15 Nov</name>\n      <Placemark><name>Shanghai Pudong Airport (PVG), Terminal 2</name><description>[BOOKED · airport]</description><Point><coordinates>121.8045,31.1504,0</coordinates></Point></Placemark>\n      <Placemark><name>INS New Paradise (Fuxing Park)</name><description>[BOOKED · sight] Your pick. 6 floors of clubs and bars at 109 Yandang Rd (雁荡路109号), inside Fuxing Park. Park gates shut at 21:00, so go in on the Yandang Rd side.</description><Point><coordinates>121.4703,31.2187,0</coordinates></Point></Placemark>\n      <Placemark><name>Xintiandi &amp; Sinan Mansions night walk</name><description>[IDEA · sight] Next door to INS. Quiet, lit-up old shikumen lanes after the clubs.</description><Point><coordinates>121.4749,31.2196,0</coordinates></Point></Placemark>\n      <Placemark><name>The Bund at dawn</name><description>[IDEA · sight] Pudong skyline across the river. First light around 06:00.</description><Point><coordinates>121.4903,31.24,0</coordinates></Point></Placemark>\n      <Placemark><name>Late-night food near Xintiandi</name><description>[IDEA · food] Soup dumplings or noodles to refuel before the airport run.</description><Point><coordinates>121.477,31.2165,0</coordinates></Point></Placemark>\n    </Folder>\n    <Folder><name>Taipei 15–18 Nov</name>\n      <Placemark><name>Taoyuan Airport (TPE), Terminal 1</name><description>[BOOKED · airport]</description><Point><coordinates>121.2328,25.0777,0</coordinates></Point></Placemark>\n      <Placemark><name>Taipei Main Station</name><description>[IDEA · transit] Airport MRT from Taoyuan (about 40 min) and the high-speed rail to Kaohsiung both start here.</description><Point><coordinates>121.517,25.0478,0</coordinates></Point></Placemark>\n      <Placemark><name>Ximending</name><description>[IDEA · sight]</description><Point><coordinates>121.5068,25.0422,0</coordinates></Point></Placemark>\n      <Placemark><name>Taipei 101 Observatory</name><description>[IDEA · sight]</description><Point><coordinates>121.5645,25.0339,0</coordinates></Point></Placemark>\n      <Placemark><name>Elephant Mountain trail</name><description>[IDEA · sight] Short steep climb; best view of 101 at sunset (around 17:05 in late November).</description><Point><coordinates>121.5706,25.0273,0</coordinates></Point></Placemark>\n      <Placemark><name>Raohe Night Market</name><description>[IDEA · food]</description><Point><coordinates>121.5775,25.0509,0</coordinates></Point></Placemark>\n      <Placemark><name>Longshan Temple</name><description>[IDEA · sight]</description><Point><coordinates>121.4999,25.0372,0</coordinates></Point></Placemark>\n      <Placemark><name>Chiang Kai-shek Memorial Hall</name><description>[IDEA · sight]</description><Point><coordinates>121.5219,25.0346,0</coordinates></Point></Placemark>\n      <Placemark><name>Din Tai Fung (Xinyi Rd)</name><description>[IDEA · food] The original branch, on Yongkang Street's corner. Take a queue number, then wander.</description><Point><coordinates>121.53,25.0334,0</coordinates></Point></Placemark>\n      <Placemark><name>Jiufen Old Street</name><description>[IDEA · sight] About 1 hour by bus from Zhongxiao Fuxing. Prettiest at dusk.</description><Point><coordinates>121.8448,25.1092,0</coordinates></Point></Placemark>\n    </Folder>\n    <Folder><name>Kaohsiung 18–19 Nov</name>\n      <Placemark><name>HSR Zuoying Station</name><description>[IDEA · transit] High-speed rail from Taipei Main Station takes about 1h35.</description><Point><coordinates>120.3081,22.6873,0</coordinates></Point></Placemark>\n      <Placemark><name>Lotus Pond, Dragon &amp; Tiger Pagodas</name><description>[IDEA · sight]</description><Point><coordinates>120.2944,22.6804,0</coordinates></Point></Placemark>\n      <Placemark><name>Formosa Boulevard Station (Dome of Light)</name><description>[IDEA · sight]</description><Point><coordinates>120.302,22.6315,0</coordinates></Point></Placemark>\n      <Placemark><name>Liuhe Night Market</name><description>[IDEA · food]</description><Point><coordinates>120.2995,22.6325,0</coordinates></Point></Placemark>\n      <Placemark><name>Pier-2 Art Center</name><description>[IDEA · sight]</description><Point><coordinates>120.2817,22.62,0</coordinates></Point></Placemark>\n      <Placemark><name>Cijin Island (ferry from Gushan)</name><description>[IDEA · sight]</description><Point><coordinates>120.2665,22.6125,0</coordinates></Point></Placemark>\n    </Folder>\n    <Folder><name>Tokyo 22–24 Nov</name>\n      <Placemark><name>Narita Airport (NRT), Terminal 2</name><description>[BOOKED · airport]</description><Point><coordinates>140.3864,35.7647,0</coordinates></Point></Placemark>\n      <Placemark><name>Hotel Grand Arc Hanzomon</name><description>[BOOKED · hotel] 22→23 Nov · check-in 14:00, out 10:00 · booking 1653718122516266 · free cancel until 21 Nov 23:59 · +81 3 3288 0111</description><Point><coordinates>139.7434,35.682991,0</coordinates></Point></Placemark>\n      <Placemark><name>Chidorigafuchi moat walk</name><description>[IDEA · sight] 5 min from the hotel. Easy morning walk before check-out.</description><Point><coordinates>139.7447,35.6915,0</coordinates></Point></Placemark>\n      <Placemark><name>Tsukiji Outer Market</name><description>[IDEA · food]</description><Point><coordinates>139.7707,35.6654,0</coordinates></Point></Placemark>\n      <Placemark><name>Senso-ji, Asakusa</name><description>[IDEA · sight]</description><Point><coordinates>139.7967,35.7148,0</coordinates></Point></Placemark>\n      <Placemark><name>Shibuya Crossing</name><description>[IDEA · sight]</description><Point><coordinates>139.7005,35.6595,0</coordinates></Point></Placemark>\n      <Placemark><name>Tokyu Stay Kamata – Tokyo Haneda</name><description>[BOOKED · hotel] 23→24 Nov · check-in 15:00, out 11:00 · booking 1653718122460473 · free cancel until 22 Nov 23:59 · +81 3 5714 1090</description><Point><coordinates>139.721514,35.560824,0</coordinates></Point></Placemark>\n      <Placemark><name>Kamata gyoza (Nihao)</name><description>[IDEA · food] Kamata is famous for crispy-winged gyoza. Early dinner, early bed.</description><Point><coordinates>139.7155,35.5615,0</coordinates></Point></Placemark>\n      <Placemark><name>Haneda Airport (HND), Terminal 3</name><description>[BOOKED · airport]</description><Point><coordinates>139.7684,35.544,0</coordinates></Point></Placemark>\n    </Folder>\n    <Folder><name>Hong Kong 24–25 Nov</name>\n      <Placemark><name>Hong Kong Airport (HKG), Terminal 1</name><description>[BOOKED · airport]</description><Point><coordinates>113.9146,22.3134,0</coordinates></Point></Placemark>\n      <Placemark><name>Airport Express · Hong Kong Station</name><description>[IDEA · transit] About 24 min to the airport.</description><Point><coordinates>114.1582,22.285,0</coordinates></Point></Placemark>\n      <Placemark><name>Tim Ho Wan (IFC)</name><description>[IDEA · food]</description><Point><coordinates>114.158,22.2852,0</coordinates></Point></Placemark>\n      <Placemark><name>Man Mo Temple</name><description>[IDEA · sight]</description><Point><coordinates>114.1501,22.284,0</coordinates></Point></Placemark>\n      <Placemark><name>Victoria Peak (Peak Tram)</name><description>[IDEA · sight]</description><Point><coordinates>114.1497,22.271,0</coordinates></Point></Placemark>\n      <Placemark><name>Star Ferry (Central → Tsim Sha Tsui)</name><description>[IDEA · transit]</description><Point><coordinates>114.1617,22.2869,0</coordinates></Point></Placemark>\n      <Placemark><name>TST Promenade · Symphony of Lights 20:00</name><description>[IDEA · sight]</description><Point><coordinates>114.174,22.2932,0</coordinates></Point></Placemark>\n      <Placemark><name>Temple Street Night Market</name><description>[IDEA · food]</description><Point><coordinates>114.17,22.3059,0</coordinates></Point></Placemark>\n    </Folder>\n    <Folder><name>Beijing (transit) </name>\n      <Placemark><name>Beijing Daxing Airport (PKX)</name><description>[BOOKED · airport]</description><Point><coordinates>116.4105,39.5098,0</coordinates></Point></Placemark>\n    </Folder>\n    <Folder><name>Moscow </name>\n      <Placemark><name>Sheremetyevo Airport (SVO), Terminal C</name><description>[BOOKED · airport]</description><Point><coordinates>37.4146,55.9726,0</coordinates></Point></Placemark>\n    </Folder>\n  </Document>\n</kml>\n";
@@ -215,31 +211,55 @@ let done = store.get("aq-done",{});
 let state = {day:"all", view:"world", city:null, hl:null, filter:"all"};
 
 /* where each city medallion sits; the secret level floats off Taiwan's east coast so it doesn't cover Taipei */
-const NODE = code => code==="UNK" ? [23.4,124.4] : [C[code].lat,C[code].lng];
+const NODE = code => code==="UNK" ? [124.4,23.4] : [C[code].lng,C[code].lat];  /* [lng,lat] */
 
-/* ---------- map ---------- */
-const map = L.map("map",{zoomSnap:.25,minZoom:3,maxZoom:18,worldCopyJump:true,attributionControl:true});
-const LAYERS = {
-  map: L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}),
-  terrain: L.tileLayer("https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png",{subdomains:"abc",maxZoom:17,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, SRTM · style &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (CC-BY-SA)'}),
-  sat: L.tileLayer("https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2020_3857/default/g/{z}/{y}/{x}.jpg",{maxZoom:19,maxNativeZoom:14,attribution:'<a href="https://s2maps.eu">Sentinel-2 cloudless</a> by EOX IT Services GmbH (contains modified Copernicus Sentinel data 2020)'})
-};
-let curLayer="map"; LAYERS.map.addTo(map);
-function setLayer(k){
-  map.removeLayer(LAYERS[curLayer]); LAYERS[k].addTo(map); curLayer=k;
-  $("#map").className=k==="sat"?"sat":"warm";
-  ["map","terrain","sat"].forEach(n=>$("#ly_"+n).setAttribute("aria-pressed",String(n===k)));
-}
-["map","terrain","sat"].forEach(n=>$("#ly_"+n).onclick=()=>setLayer(n));
-
-const routeLayer=L.layerGroup().addTo(map), cityLayer=L.layerGroup().addTo(map), pinLayer=L.layerGroup().addTo(map), shipLayer=L.layerGroup().addTo(map);
+/* ---------- map (MapLibre GL, OpenFreeMap vector tiles) ---------- */
+const map = new maplibregl.Map({container:"map", style:"https://tiles.openfreemap.org/styles/liberty", center:[125,29], zoom:3.6, attributionControl:{compact:true}, maxPitch:70});
+map.addControl(new maplibregl.NavigationControl({visualizePitch:true}),"top-left");
 const PIN_ZOOM=8.5;
 
-/* curved leg between two points */
+/* recolour the base map into the golden-hour palette */
+function warmStyle(){
+  const set=(id,prop,val)=>{try{map.setPaintProperty(id,prop,val)}catch(e){}};
+  map.getStyle().layers.forEach(l=>{
+    const id=l.id;
+    if(l.type==="background") set(id,"background-color","#f4d6a8");
+    else if(/water/.test(id)&&l.type==="fill") set(id,"fill-color","#4fa7b0");
+    else if(/water/.test(id)&&l.type==="line") set(id,"line-color","#4fa7b0");
+    else if(/park|wood|forest|grass|landcover|landuse_(park|grass)/.test(id)&&l.type==="fill") set(id,"fill-color","#c9c98a");
+    else if(/landuse|residential/.test(id)&&l.type==="fill") set(id,"fill-color","#efc796");
+    else if(/building/.test(id)&&l.type==="fill") set(id,"fill-color","#e2a978");
+    else if(/building/.test(id)&&l.type==="fill-extrusion"){ set(id,"fill-extrusion-color","#e7a06c"); set(id,"fill-extrusion-opacity",.85); }
+    else if(/highway|road|street|motorway|trunk|primary/.test(id)&&l.type==="line"&&!/casing/.test(id)) set(id,"line-color","#fff4e4");
+    else if(l.type==="symbol"){ set(id,"text-color","#5a2a30"); set(id,"text-halo-color","rgba(255,236,210,.9)"); }
+  });
+}
+function addSources(){
+  const firstSymbol=(map.getStyle().layers.find(l=>l.type==="symbol")||{}).id;
+  map.addSource("sat",{type:"raster",tiles:["https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2020_3857/default/g/{z}/{y}/{x}.jpg"],tileSize:256,maxzoom:14,
+    attribution:'<a href="https://s2maps.eu">Sentinel-2 cloudless</a> by EOX (Copernicus Sentinel data 2020)'});
+  map.addLayer({id:"sat",type:"raster",source:"sat",layout:{visibility:"none"},paint:{"raster-saturation":.15}},firstSymbol);
+  map.addSource("legs",{type:"geojson",data:fc([])});
+  map.addSource("day",{type:"geojson",data:fc([])});
+  map.addLayer({id:"legs-shadow",type:"line",source:"legs",paint:{"line-color":"#3a1a24","line-opacity":.25,"line-width":7,"line-translate":[0,5]},layout:{"line-cap":"round"}});
+  map.addLayer({id:"legs",type:"line",source:"legs",paint:{"line-color":"#fff4e4","line-opacity":["case",["get","on"],1,.4],"line-width":["case",["get","on"],4,3],"line-dasharray":[.2,3]},layout:{"line-cap":"round"}});
+  map.addLayer({id:"day",type:"line",source:"day",paint:{"line-color":"#ff8a4d","line-width":4.5,"line-dasharray":[.2,2.5]},layout:{"line-cap":"round","line-join":"round"}});
+}
+const fc=f=>({type:"FeatureCollection",features:f});
+const line=(coords,props={})=>({type:"Feature",properties:props,geometry:{type:"LineString",coordinates:coords}});
+
+/* layer buttons: Map / Satellite / 3D */
+let sat=false, tilt=false;
+function paintButtons(){$("#ly_map").setAttribute("aria-pressed",String(!sat));$("#ly_sat").setAttribute("aria-pressed",String(sat));$("#ly_3d").setAttribute("aria-pressed",String(tilt));$("#map").className=sat?"sat":"warm";}
+$("#ly_map").onclick=()=>{sat=false;map.setLayoutProperty("sat","visibility","none");paintButtons();};
+$("#ly_sat").onclick=()=>{sat=true;map.setLayoutProperty("sat","visibility","visible");paintButtons();};
+$("#ly_3d").onclick=()=>{tilt=!tilt;map.easeTo({pitch:tilt?60:0,bearing:tilt?-20:0,duration:1000});paintButtons();};
+
+/* curved leg between two [lng,lat] points */
 function arc(a,b,bend=.22,n=48){
-  const [la1,lo1]=a,[la2,lo2]=b, mla=(la1+la2)/2, mlo=(lo1+lo2)/2, dx=lo2-lo1, dy=la2-la1;
-  const cla=mla+dx*bend, clo=mlo-dy*bend, out=[];
-  for(let i=0;i<=n;i++){const t=i/n,u=1-t; out.push([u*u*la1+2*u*t*cla+t*t*la2, u*u*lo1+2*u*t*clo+t*t*lo2]);}
+  const [lo1,la1]=a,[lo2,la2]=b, mlo=(lo1+lo2)/2, mla=(la1+la2)/2, dx=lo2-lo1, dy=la2-la1;
+  const clo=mlo-dy*bend, cla=mla+dx*bend, out=[];
+  for(let i=0;i<=n;i++){const t=i/n,u=1-t; out.push([u*u*lo1+2*u*t*clo+t*t*lo2, u*u*la1+2*u*t*cla+t*t*la2]);}
   return out;
 }
 
@@ -251,94 +271,88 @@ const SHIP_SVG = `<svg class="ship-ic" viewBox="-40 -70 80 80" xmlns="http://www
   <path d="M-26 -8 L26 -8 L18 8 L-18 8 Z" fill="#7a3e2c" stroke="#3a1a24" stroke-width="2.5"/>
   <rect x="-12" y="-5" width="6" height="5" fill="#ffd36e"/><rect x="-2" y="-5" width="6" height="5" fill="#ffd36e"/><rect x="8" y="-5" width="6" height="5" fill="#ffd36e"/>
   <path d="M-26 -4 l-10 -6 l0 12 z" fill="#3a1a24"/><path d="M0 -50 l0 -10 l12 4 z" fill="#ff6a45" stroke="#3a1a24" stroke-width="1.5"/></svg>`;
+const shipEl=document.createElement("div"); shipEl.innerHTML=SHIP_SVG; shipEl.style.pointerEvents="none";
+const ship=new maplibregl.Marker({element:shipEl,anchor:"bottom"});
 let shipAnim=null;
 const reduced = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
 function flyShip(pts,secs){
-  if(shipAnim)cancelAnimationFrame(shipAnim); shipLayer.clearLayers(); if(pts.length<2)return;
-  const m=L.marker(pts[0],{icon:L.divIcon({html:SHIP_SVG,className:"",iconSize:[0,0]}),interactive:false,zIndexOffset:1000}).addTo(shipLayer);
-  if(reduced)return;
-  // distance-weighted path so speed is even
+  if(shipAnim)cancelAnimationFrame(shipAnim); ship.remove(); if(pts.length<2)return;
+  ship.setLngLat(pts[0]).addTo(map); if(reduced)return;
   const d=[0]; for(let i=1;i<pts.length;i++)d.push(d[i-1]+Math.hypot(pts[i][0]-pts[i-1][0],pts[i][1]-pts[i-1][1]));
   const total=d[d.length-1]||1, t0=performance.now();
   const step=now=>{const f=((now-t0)/1000/secs)%1*total; let i=1; while(i<d.length-1&&d[i]<f)i++;
-    const k=(f-d[i-1])/((d[i]-d[i-1])||1); m.setLatLng([pts[i-1][0]+(pts[i][0]-pts[i-1][0])*k, pts[i-1][1]+(pts[i][1]-pts[i-1][1])*k]); shipAnim=requestAnimationFrame(step);};
+    const k=(f-d[i-1])/((d[i]-d[i-1])||1); ship.setLngLat([pts[i-1][0]+(pts[i][0]-pts[i-1][0])*k, pts[i-1][1]+(pts[i][1]-pts[i-1][1])*k]); shipAnim=requestAnimationFrame(step);};
   shipAnim=requestAnimationFrame(step);
 }
 
 /* ---------- drawing ---------- */
 function stopsFor(day){return day==="all"?TRIP.days.flatMap(d=>d.stops):TRIP.days[day-1].stops}
 const LEGS=[["SHA","TPE",2],["TPE","KHH",5],["KHH","UNK",6],["UNK","TYO",9],["TYO","HKG",11]];
+const ARRIVE=[108.5,34.5], LEAVE=[116.41,39.51];
+let markers={notes:[],cities:[],pins:[]};
+const clear=k=>{markers[k].forEach(m=>m.remove());markers[k]=[];};
+const htmlMarker=(html,lnglat,anchor="center",onClick,offset=[0,0])=>{const el=document.createElement("div");el.innerHTML=html;const node=el.firstElementChild;if(onClick)node.addEventListener("click",e=>{e.stopPropagation();onClick();});return new maplibregl.Marker({element:node,anchor,offset}).setLngLat(lnglat).addTo(map);};
 
 function drawRoutes(){
-  routeLayer.clearLayers();
-  const shipPts=[];
-  LEGS.forEach(([a,b,day])=>{
-    const pts=arc(NODE(a),NODE(b)); const on=state.day==="all"||state.day===day;
-    L.polyline(pts,{color:"#3a1a24",weight:7,opacity:.25,interactive:false}).addTo(routeLayer);
-    L.polyline(pts,{color:on?"#fff4e4":"#fff4e4",opacity:on?1:.35,weight:on?4:3,dashArray:"2 12",lineCap:"round",interactive:false}).addTo(routeLayer);
-    if(on)shipPts.push(...pts);
-  });
-  // into Shanghai from Moscow, out of Hong Kong to Beijing
-  const inn=arc([34.5,108.5],NODE("SHA"),.1,20), out=arc(NODE("HKG"),[39.51,116.41],-.15,30);
-  [inn,out].forEach(pts=>L.polyline(pts,{color:"#fff4e4",opacity:.45,weight:3,dashArray:"2 12",interactive:false}).addTo(routeLayer));
-  L.marker([34.5,108.5],{icon:L.divIcon({className:"",html:`<span class="mk-note pin note"><span class="tip">← from Moscow · 14 Nov</span></span>`}),interactive:false}).addTo(routeLayer);
-  L.marker([39.51,116.41],{icon:L.divIcon({className:"",html:`<span class="mk-note pin note"><span class="tip">Beijing → Moscow · 25 Nov</span></span>`}),interactive:false}).addTo(routeLayer);
-  // day route inside a city
-  if(state.day!=="all"){
-    const seq=stopsFor(state.day).map(s=>s.p).filter(id=>id&&P[id]&&C[P[id].city]).map(id=>[P[id].lat,P[id].lng]);
-    if(seq.length>1){L.polyline(seq,{color:"#ff8a4d",weight:4,opacity:.95,dashArray:"1 10",lineCap:"round",interactive:false}).addTo(routeLayer);}
-    const legOn=LEGS.some(l=>l[2]===state.day);
-    flyShip(state.view==="world"&&legOn?shipPts:(seq.length>1?seq:shipPts), Math.max(8,seq.length*2.5));
-  } else flyShip(shipPts, 24);
+  if(!map.getSource("legs"))return;
+  const feats=[], shipPts=[];
+  LEGS.forEach(([a,b,day])=>{const pts=arc(NODE(a),NODE(b)); const on=state.day==="all"||state.day===day; feats.push(line(pts,{on})); if(on)shipPts.push(...pts);});
+  feats.push(line(arc(ARRIVE,NODE("SHA"),.1,20),{on:false}), line(arc(NODE("HKG"),LEAVE,-.15,30),{on:false}));
+  map.getSource("legs").setData(fc(feats));
+  clear("notes");
+  markers.notes.push(htmlMarker(`<div class="pin note"><span class="tip">← from Moscow · 14 Nov</span></div>`,ARRIVE));
+  markers.notes.push(htmlMarker(`<div class="pin note"><span class="tip">Beijing → Moscow · 25 Nov</span></div>`,LEAVE));
+  let seq=[];
+  if(state.day!=="all") seq=stopsFor(state.day).map(s=>s.p).filter(id=>id&&P[id]&&C[P[id].city]).map(id=>[P[id].lng,P[id].lat]);
+  map.getSource("day").setData(fc(seq.length>1?[line(seq)]:[]));
+  if(state.day==="all") flyShip(shipPts,24);
+  else { const legOn=LEGS.some(l=>l[2]===state.day); flyShip(state.view==="world"&&legOn?shipPts:(seq.length>1?seq:shipPts), Math.max(8,seq.length*2.5)); }
 }
-
 function drawCities(){
-  cityLayer.clearLayers();
+  clear("cities");
   if(map.getZoom()>=PIN_ZOOM)return;
   Object.entries(C).forEach(([code,c])=>{
     const on=state.day!=="all"&&TRIP.days[state.day-1].city===code;
-    const html=`<button class="mk-city city${c.secret?" secret":""}${on?" on":""}" aria-label="${esc(c.name)}, ${c.dates}. Zoom in"><span class="medal" style="background:${c.color}">${c.secret?"?":c.level}</span><span class="nm">${esc(c.name)}</span><span class="dt">${c.dates}</span></button>`;
-    L.marker(NODE(code),{icon:L.divIcon({className:"",html,iconSize:[0,0]}),zIndexOffset:500}).on("click",()=>openCity(code)).addTo(cityLayer);
+    const html=`<button class="city${c.secret?" secret":""}${on?" on":""}" aria-label="${esc(c.name)}, ${c.dates}. Zoom in"><span class="medal" style="background:${c.color}">${c.secret?"?":c.level}</span><span class="nm">${esc(c.name)}</span><span class="dt">${c.dates}</span></button>`;
+    markers.cities.push(htmlMarker(html,NODE(code),"top",()=>openCity(code),[0,-24]));
   });
 }
-
 function popupHTML(id){const p=P[id];
-  return `<div style="font-family:var(--body);min-width:180px"><b>${esc(p.name)}</b> <span class="tag ${p.status}">${p.status.toUpperCase()}</span>${p.note?`<div style="margin-top:4px">${esc(p.note)}</div>`:""}<div style="margin-top:6px"><a href="${gmaps(p)}" target="_blank" rel="noopener">Open in Google Maps ↗</a></div></div>`;}
-
+  return `<div class="aq-popin"><b>${esc(p.name)}</b> <span class="tag ${p.status}">${p.status.toUpperCase()}</span>${p.note?`<div style="margin-top:4px">${esc(p.note)}</div>`:""}<div style="margin-top:6px"><a href="${gmaps(p)}" target="_blank" rel="noopener">Open in Google Maps ↗</a></div></div>`;}
 function drawPins(){
-  pinLayer.clearLayers();
+  clear("pins");
   if(map.getZoom()<PIN_ZOOM)return;
   const dayIds=new Set(state.day==="all"?[]:stopsFor(state.day).map(s=>s.p).filter(Boolean));
   Object.entries(P).forEach(([id,p])=>{
     if(!C[p.city]||p.city==="UNK")return;
     if(state.filter!=="all"&&p.status!==state.filter)return;
     const dim=state.day!=="all"&&!dayIds.has(id);
-    const html=`<button class="mk-pin pin${state.hl===id?" hl":""}${dim?" dim":""}" aria-label="${esc(p.name)}, ${p.status}"><span class="ic" style="background:${STATUS_COL[p.status]}"><span>${p.status==="missing"?"?":TYPE[p.type]}</span></span><span class="tip">${esc(p.name)}</span></button>`;
-    L.marker([p.lat,p.lng],{icon:L.divIcon({className:"",html,iconSize:[0,0]}),zIndexOffset:dim?0:200})
-      .bindPopup(popupHTML(id),{className:"aq-pop"})
-      .on("click",()=>{state.hl=id;const el=document.querySelector(`[data-pid="${id}"]`);if(el)el.scrollIntoView({block:"nearest",behavior:"smooth"});})
-      .addTo(pinLayer);
+    const html=`<button class="pin${state.hl===id?" hl":""}${dim?" dim":""}" aria-label="${esc(p.name)}, ${p.status}"><span class="ic" style="background:${STATUS_COL[p.status]}"><span>${p.status==="missing"?"?":TYPE[p.type]}</span></span><span class="tip">${esc(p.name)}</span></button>`;
+    const m=htmlMarker(html,[p.lng,p.lat],"bottom");
+    m.setPopup(new maplibregl.Popup({offset:[0,-48],className:"aq-pop",maxWidth:"260px"}).setHTML(popupHTML(id)));
+    m.getElement().addEventListener("click",()=>{state.hl=id;const el=document.querySelector(`[data-pid="${id}"]`);if(el)el.scrollIntoView({block:"nearest",behavior:"smooth"});});
+    if(dim)m.getElement().style.zIndex=0; else m.getElement().style.zIndex=2;
+    markers.pins.push(m);
   });
 }
-map.on("zoomend",()=>{drawCities();drawPins();updateHead();});
+let lastSide=null;
+map.on("zoomend",()=>{const side=map.getZoom()>=PIN_ZOOM; if(side!==lastSide){lastSide=side;drawCities();drawPins();} updateHead();});
 
 /* ---------- views ---------- */
-function boundsOf(list){return L.latLngBounds(list.map(p=>[p.lat,p.lng]));}
-function openWorld(){
-  state.view="world";state.city=null;
-  map.flyToBounds(L.latLngBounds(Object.keys(C).map(NODE)),{padding:[70,70],duration:1.2});
-}
+function boundsOf(pts){const b=new maplibregl.LngLatBounds(); pts.forEach(p=>b.extend(p)); return b;}
+function fitWorld(dur=1400){ state.view="world"; state.city=null; map.fitBounds(boundsOf(Object.keys(C).map(NODE)),{padding:{top:80,bottom:90,left:90,right:90},duration:dur,pitch:tilt?45:0}); }
+const openWorld=()=>fitWorld();
 function openCity(code,ids){
   state.view="city";state.city=code;
-  if(code==="UNK"){map.flyTo(NODE("UNK"),6.5,{duration:1.2});return;}
-  const list=(ids&&ids.length?ids.map(i=>P[i]):Object.values(P).filter(p=>p.city===code&&!p.far));
-  map.flyToBounds(boundsOf(list).pad(.25),{maxZoom:14.5,duration:1.4});
+  if(code==="UNK"){map.flyTo({center:NODE("UNK"),zoom:6.5,duration:1400});return;}
+  const list=(ids&&ids.length?ids.map(i=>P[i]):Object.values(P).filter(p=>p.city===code&&!p.far)).map(p=>[p.lng,p.lat]);
+  map.fitBounds(boundsOf(list),{padding:90,maxZoom:15,duration:1600,pitch:tilt?60:0});
 }
 function updateHead(){
   const z=map.getZoom(), filt=$("#filters");
   if(state.view==="world"||z<PIN_ZOOM){
     $("#mapTitle").textContent="World map"; $("#backBtn").hidden=true; filt.innerHTML="";
-    $("#mapWhere").textContent=state.day==="all"?"Tap a city to zoom into its streets":TRIP.days[state.day-1].date+" · "+TRIP.days[state.day-1].title;
+    $("#mapWhere").textContent=state.day==="all"?"Tap a city to fly into its streets":TRIP.days[state.day-1].date+" · "+TRIP.days[state.day-1].title;
     return;
   }
   const c=C[state.city]||{};
@@ -359,9 +373,10 @@ function renderLevels(){
 }
 function selectDay(key){
   state.day=key; state.hl=null; renderLevels(); renderLog();
-  if(key==="all"||TRIP.days[key-1].blank){ if(key!=="all"&&TRIP.days[key-1].blank){openCity("UNK");} else openWorld(); }
+  if(key==="all") openWorld();
+  else if(TRIP.days[key-1].blank) openCity("UNK");
   else{const d=TRIP.days[key-1]; const ids=d.stops.map(s=>s.p).filter(id=>id&&P[id]&&P[id].city===d.city&&!P[id].far); openCity(d.city,ids);}
-  drawRoutes(); drawCities(); drawPins(); updateHead();
+  drawRoutes(); map.once("moveend",()=>{drawCities();drawPins();updateHead();}); drawPins(); updateHead();
 }
 
 function stopHTML(d,s,i){
@@ -384,7 +399,7 @@ function renderLog(){
   $("#log").querySelectorAll("input[data-k]").forEach(inp=>inp.onchange=()=>{done[inp.dataset.k]=inp.checked;store.set("aq-done",done);inp.closest(".stop").classList.toggle("done",inp.checked);renderXP();});
   $("#log").querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>{const id=b.dataset.go,p=P[id];state.hl=id;
     if(C[p.city])state.city=p.city; state.view="city";
-    map.flyTo([p.lat,p.lng],Math.max(map.getZoom(),16),{duration:1.2}); map.once("moveend",()=>{drawPins();});
+    map.flyTo({center:[p.lng,p.lat],zoom:Math.max(map.getZoom(),16),duration:1400}); map.once("moveend",()=>{drawPins();});
     document.getElementById("stage").scrollIntoView({block:"nearest",behavior:"smooth"});});
 }
 function renderXP(){
@@ -401,8 +416,8 @@ $("#backBtn").onclick=()=>{state.hl=null;openWorld();};
 $("#kmlText").value=KML;
 $("#copyKml").onclick=async()=>{try{await navigator.clipboard.writeText(KML);$("#copyMsg").textContent="Copied. Paste into a text file named asia-quest.kml, then import it.";}catch(e){$("#kmlText").select();$("#copyMsg").textContent="Copy is blocked here. The text below is selected: press Ctrl/Cmd+C.";}};
 
-map.fitBounds(L.latLngBounds(Object.keys(C).map(NODE)),{padding:[70,70]});
-renderAlerts(); renderLevels(); renderLog(); renderXP(); drawRoutes(); drawCities(); drawPins(); updateHead();
+map.on("load",()=>{ warmStyle(); addSources(); fitWorld(0); drawRoutes(); drawCities(); drawPins(); updateHead(); });
+renderAlerts(); renderLevels(); renderLog(); renderXP();
 </script>
 </body>
 </html>

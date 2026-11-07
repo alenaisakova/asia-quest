@@ -11,39 +11,39 @@
 <style>
 /* Layout: golden-hour adventure. Sunset sky page, warm glass panels; HUD, level strip, painted map + quest log, alerts + Maps folder. Single warm theme. */
 :root{
-  --sky1:#ffcf8a; --sky2:#f08a5d; --dusk:#3a2340;
-  --panel:rgba(46,24,30,.84); --panel2:rgba(255,236,210,.08); --edge:#ffcf8a;
-  --text:#fff4e4; --muted:#e6c3a6; --route:#fff4e4;
-  --booked:#7fd88f; --idea:#6fd0e6; --missing:#ff6a45;
+  --sky1:#e9c46a; --sky2:#8fbf9f; --dusk:#0f2e25;
+  --panel:rgba(14,46,36,.86); --panel2:rgba(230,245,225,.08); --edge:#e9c46a;
+  --text:#f4f8ee; --muted:#b9d2bf; --route:#f4f8ee;
+  --booked:#9be37a; --idea:#7fd6d0; --missing:#e8483b;
   --display:"Lilita One", "Arial Rounded MT Bold", system-ui, sans-serif; --body:"Nunito", system-ui, sans-serif;
   color-scheme:dark;
 }
 *{box-sizing:border-box}
 html,body{margin:0;min-height:100%;color:var(--text);font-family:var(--body);font-size:16px;line-height:1.4}
-body{background:linear-gradient(180deg,var(--sky1) 0%,var(--sky2) 26%,#b4545a 52%,var(--dusk) 82%) fixed,var(--dusk)}
+body{background:linear-gradient(180deg,#e6efdc 0%,#b7d4b5 22%,#4f8a6c 50%,var(--dusk) 82%) fixed,var(--dusk)}
 a{color:var(--sky1);font-weight:700}
 button{font:inherit;color:inherit;cursor:pointer}
 button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #fff;outline-offset:2px}
 .wrap{max-width:1280px;margin:0 auto;padding:16px 16px 48px;display:grid;gap:14px}
-.glass{background:var(--panel);border:1.5px solid rgba(255,207,138,.45);border-radius:18px;box-shadow:0 18px 40px rgba(40,10,20,.35);backdrop-filter:blur(6px)}
+.glass{background:var(--panel);border:1.5px solid rgba(233,196,106,.45);border-radius:18px;box-shadow:0 18px 40px rgba(5,30,20,.35);backdrop-filter:blur(6px)}
 h1,h2,h3{font-family:var(--display);font-weight:400;text-wrap:balance;margin:0;letter-spacing:.5px}
-h1{font-size:40px;line-height:1;color:#fff;text-shadow:0 3px 0 #b4545a,0 8px 24px rgba(80,20,30,.5)}
+h1{font-size:40px;line-height:1;color:#fffdf5;text-shadow:0 3px 0 #b8322a,0 8px 24px rgba(10,40,30,.45)}
 h2{font-size:20px;color:var(--sky1)}
 /* HUD */
 .hud{display:flex;flex-wrap:wrap;align-items:flex-end;gap:12px 28px;padding:6px 6px 2px}
-.hud .sub{color:#4a2030;font-weight:800;font-size:16px;margin-top:6px}
+.hud .sub{color:#1f4a38;font-weight:800;font-size:16px;margin-top:6px}
 .stats{display:flex;flex-wrap:wrap;gap:8px;margin-left:auto;font-variant-numeric:tabular-nums}
 .stat{background:var(--panel);border-radius:999px;padding:6px 14px;font-weight:800;display:flex;gap:8px;align-items:center}
 .stat b{font-family:var(--display);font-weight:400;color:var(--sky1);font-size:15px}
 .xpbar{width:120px;height:10px;background:rgba(255,255,255,.15);border-radius:99px;overflow:hidden}
-.xpbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#ffd36e,#ff8a4d);border-radius:99px;transition:width .4s}
+.xpbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#e9c46a,#d9483b);border-radius:99px;transition:width .4s}
 /* level strip */
 .levels{display:flex;gap:8px;overflow-x:auto;padding:10px;scrollbar-width:thin}
 .lv{flex:0 0 auto;min-width:74px;padding:7px 10px 8px;background:var(--panel2);border:1.5px solid transparent;border-radius:12px;text-align:center;position:relative}
 .lv .d{font-family:var(--display);font-size:16px;display:block;line-height:1.1}
 .lv .c{font-size:13px;color:var(--muted);display:block;white-space:nowrap;font-weight:700}
 .lv .bar{position:absolute;left:10px;right:10px;bottom:3px;height:3px;border-radius:3px}
-.lv[aria-pressed="true"]{background:rgba(255,207,138,.18);border-color:var(--edge)}
+.lv[aria-pressed="true"]{background:rgba(233,196,106,.18);border-color:var(--edge)}
 .lv[aria-pressed="true"] .c{color:var(--text)}
 .lv.blank .c{font-style:italic}
 /* main */
@@ -52,56 +52,56 @@ h2{font-size:20px;color:var(--sky1)}
 .mapbox{padding:12px;position:relative}
 .maphead{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;padding:2px 4px 10px}
 .maphead .where{color:var(--muted);font-weight:700}
-.chip{background:var(--panel2);border:1.5px solid rgba(255,207,138,.3);border-radius:99px;padding:3px 12px;font-size:14px;font-weight:700}
-.chip[aria-pressed="true"]{border-color:var(--edge);background:rgba(255,207,138,.2)}
-.back{margin-left:auto;background:var(--sky1);color:#4a2030;border:0;border-radius:99px;padding:6px 14px;font-family:var(--display);font-size:15px}
+.chip{background:var(--panel2);border:1.5px solid rgba(233,196,106,.3);border-radius:99px;padding:3px 12px;font-size:14px;font-weight:700}
+.chip[aria-pressed="true"]{border-color:var(--edge);background:rgba(233,196,106,.2)}
+.back{margin-left:auto;background:var(--sky1);color:#14302a;border:0;border-radius:99px;padding:6px 14px;font-family:var(--display);font-size:15px}
 .stage{position:relative;width:100%;overflow:hidden;border-radius:12px;background:#2b7f8f;box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)}
 .pin{position:absolute;transform:translate(-50%,-100%);background:none;border:0;padding:0;display:flex;flex-direction:column;align-items:center;z-index:2}
-.pin .ic{width:30px;height:30px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);display:grid;place-items:center;border:2.5px solid #fff;box-shadow:0 4px 10px rgba(40,10,20,.45)}
-.pin .ic span{transform:rotate(45deg);font-family:var(--display);font-size:14px;color:#3a1a24}
-.pin .tip{margin-top:5px;background:rgba(46,24,30,.88);border-radius:8px;padding:1px 8px;font-size:13px;font-weight:700;white-space:nowrap;max-width:170px;overflow:hidden;text-overflow:ellipsis}
-.pin.note .tip{max-width:none;background:rgba(46,24,30,.7);font-style:italic}
+.pin .ic{width:30px;height:30px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);display:grid;place-items:center;border:2.5px solid #fff;box-shadow:0 4px 10px rgba(5,30,20,.45)}
+.pin .ic span{transform:rotate(45deg);font-family:var(--display);font-size:14px;color:#14302a}
+.pin .tip{margin-top:5px;background:rgba(14,46,36,.88);border-radius:8px;padding:1px 8px;font-size:13px;font-weight:700;white-space:nowrap;max-width:170px;overflow:hidden;text-overflow:ellipsis}
+.pin.note .tip{max-width:none;background:rgba(14,46,36,.7);font-style:italic}
 .pin.dim{opacity:.4}
 .pin.dim .tip{display:none}
 .pin.hl .ic{animation:bob .9s ease-in-out infinite}
 .pin.edge .tip::before{content:"→ "}
 @keyframes bob{50%{translate:0 -6px}}
 .city{position:absolute;transform:translate(-50%,-50%);background:none;border:0;padding:0;z-index:3;display:flex;flex-direction:column;align-items:center;gap:3px}
-.city .medal{width:44px;height:44px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 4px rgba(255,255,255,.18),0 8px 16px rgba(40,10,20,.45);display:grid;place-items:center;font-family:var(--display);font-size:20px;color:#3a1a24}
-.city .nm{font-family:var(--display);font-size:15px;color:#fff;text-shadow:0 2px 0 rgba(58,26,36,.9),0 0 10px rgba(58,26,36,.8);white-space:nowrap;line-height:1}
-.city .dt{font-size:12px;font-weight:800;color:#3a1a24;background:rgba(255,244,228,.9);border-radius:99px;padding:0 7px}
+.city .medal{width:44px;height:44px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 4px rgba(255,255,255,.18),0 8px 16px rgba(5,30,20,.45);display:grid;place-items:center;font-family:var(--display);font-size:20px;color:#14302a}
+.city .nm{font-family:var(--display);font-size:15px;color:#fff;text-shadow:0 2px 0 rgba(10,40,30,.9),0 0 10px rgba(10,40,30,.8);white-space:nowrap;line-height:1}
+.city .dt{font-size:12px;font-weight:800;color:#14302a;background:rgba(244,248,238,.9);border-radius:99px;padding:0 7px}
 .city.secret .medal{background:#9a8ea0 !important;color:#fff;border-style:dashed}
 .city.on .medal{animation:pulse 1.4s ease-in-out infinite}
-@keyframes pulse{50%{box-shadow:0 0 0 12px rgba(255,207,138,.35),0 8px 16px rgba(40,10,20,.45)}}
+@keyframes pulse{50%{box-shadow:0 0 0 12px rgba(233,196,106,.35),0 8px 16px rgba(5,30,20,.45)}}
 .legend{display:flex;flex-wrap:wrap;gap:6px 16px;padding:10px 4px 0;font-size:14px;color:var(--muted);font-weight:700}
 .legend span{display:inline-flex;align-items:center;gap:6px}
 .sw{width:12px;height:12px;border-radius:50%;border:2px solid #fff;display:inline-block}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.ship{display:none}}
 /* quest log */
 .log{padding:14px 16px;display:grid;gap:12px}
-.dayc{border-top:1.5px dashed rgba(255,207,138,.3);padding-top:12px;display:grid;gap:6px}
+.dayc{border-top:1.5px dashed rgba(233,196,106,.3);padding-top:12px;display:grid;gap:6px}
 .dayc:first-of-type{border-top:0;padding-top:0}
 .dayh{display:flex;gap:4px 10px;align-items:baseline;flex-wrap:wrap}
 .dayh h3{font-size:15px;color:var(--muted)}
 .dayh .ttl{font-family:var(--display);font-size:19px}
 .stop{display:grid;grid-template-columns:auto 72px 1fr;gap:8px;align-items:start;padding:3px 0}
-.stop input{width:18px;height:18px;margin:2px 0 0;accent-color:#ffb066}
+.stop input{width:18px;height:18px;margin:2px 0 0;accent-color:#d9483b}
 .stop .tm{color:var(--muted);font-variant-numeric:tabular-nums;font-size:14px;font-weight:800;padding-top:1px}
 .stop .bd{min-width:0}
-.stop .nm{background:none;border:0;padding:0;text-align:left;font-weight:800;color:var(--text);text-decoration:underline dotted rgba(255,244,228,.45);text-underline-offset:3px}
+.stop .nm{background:none;border:0;padding:0;text-align:left;font-weight:800;color:var(--text);text-decoration:underline dotted rgba(244,248,238,.45);text-underline-offset:3px}
 .stop .nt{display:block;color:var(--muted);font-size:14px}
 .stop .tx{color:var(--text);font-size:15px}
 .stop.done .nm,.stop.done .tx{text-decoration:line-through;color:var(--muted)}
 .tag{font-size:10px;font-weight:800;letter-spacing:.6px;padding:1px 7px;border-radius:99px;margin-left:6px;vertical-align:2px;color:#2a1018;white-space:nowrap}
 .tag.booked{background:var(--booked)}.tag.idea{background:var(--idea)}.tag.missing{background:var(--missing)}
 .gm{font-size:13px;margin-left:6px;white-space:nowrap}
-.flight{background:rgba(255,236,210,.07);border:1.5px solid rgba(255,207,138,.3);border-radius:12px;padding:8px 10px;display:grid;gap:2px}
+.flight{background:rgba(230,245,225,.07);border:1.5px solid rgba(233,196,106,.3);border-radius:12px;padding:8px 10px;display:grid;gap:2px}
 .flight .fl1{display:flex;gap:8px;flex-wrap:wrap;align-items:baseline}
 .flight .code{font-family:var(--display);font-size:17px;color:var(--sky1)}
 .flight .bag{font-size:13px;color:var(--muted)}
 .flight.warn{border-color:var(--missing)}
-.flight.warn .bag{color:#ffb39f;font-weight:800}
-.blankbox{border:2px dashed rgba(255,207,138,.4);border-radius:14px;padding:16px;text-align:center;color:var(--muted)}
+.flight.warn .bag{color:#f6a39a;font-weight:800}
+.blankbox{border:2px dashed rgba(233,196,106,.4);border-radius:14px;padding:16px;text-align:center;color:var(--muted)}
 .blankbox b{font-family:var(--display);font-weight:400;font-size:20px;color:var(--text);display:block;margin-bottom:4px}
 /* lower */
 .lower{display:grid;grid-template-columns:1fr 1fr;gap:14px}
@@ -109,28 +109,28 @@ h2{font-size:20px;color:var(--sky1)}
 .panelp{padding:16px 18px;display:grid;gap:10px;align-content:start}
 .alert{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start}
 .alert .lvl{font-size:10px;font-weight:800;letter-spacing:.6px;padding:3px 8px;border-radius:99px;color:#2a1018;margin-top:2px;white-space:nowrap}
-.lvl.boss{background:var(--missing)}.lvl.warn{background:#ffcf8a}.lvl.info{background:var(--idea)}.lvl.ok{background:var(--booked)}
+.lvl.boss{background:var(--missing)}.lvl.warn{background:#e9c46a}.lvl.info{background:var(--idea)}.lvl.ok{background:var(--booked)}
 ol.steps{margin:0;padding-left:22px;display:grid;gap:4px}
-.copybtn{justify-self:start;background:linear-gradient(180deg,#ffd36e,#ff9a52);color:#3a1a24;border:0;border-radius:99px;padding:9px 18px;font-family:var(--display);font-size:16px;box-shadow:0 4px 0 #b4545a}
+.copybtn{justify-self:start;background:linear-gradient(180deg,#f1d27f,#e9b949);color:#14302a;border:0;border-radius:99px;padding:9px 18px;font-family:var(--display);font-size:16px;box-shadow:0 4px 0 #b8322a}
 .msg{color:var(--booked);font-weight:700;min-height:20px}
-textarea{width:100%;height:80px;background:rgba(0,0,0,.25);color:var(--muted);border:1.5px solid rgba(255,207,138,.3);border-radius:10px;font-family:monospace;font-size:11px}
+textarea{width:100%;height:80px;background:rgba(0,0,0,.25);color:var(--muted);border:1.5px solid rgba(233,196,106,.3);border-radius:10px;font-family:monospace;font-size:11px}
 
 #map{position:absolute;inset:0;background:#2b7f8f;font-family:var(--body)}
 .stage{aspect-ratio:16/10;min-height:360px}
 .stage::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:500;border-radius:12px;
-  background:radial-gradient(ellipse at 80% 0%,rgba(255,190,120,.28),rgba(255,190,120,0) 55%),radial-gradient(ellipse at center,rgba(0,0,0,0) 55%,rgba(40,10,20,.35) 100%)}
-.warm canvas{filter:sepia(.12) saturate(1.08)}
+  background:radial-gradient(ellipse at 80% 0%,rgba(220,240,200,.22),rgba(255,190,120,0) 55%),radial-gradient(ellipse at center,rgba(0,0,0,0) 55%,rgba(5,30,20,.35) 100%)}
+.warm canvas{filter:saturate(1.05)}
 .mk .pin,.mk .city{position:static;transform:none;width:max-content;white-space:nowrap}
 .city .dt,.pin .tip{white-space:nowrap}
 .layerbtn{position:absolute;right:10px;top:10px;z-index:600;display:flex;gap:6px}
-.layerbtn button{background:rgba(46,24,30,.88);border:1.5px solid rgba(255,207,138,.35);border-radius:99px;padding:4px 12px;font-size:13px;font-weight:800}
-.layerbtn button[aria-pressed="true"]{background:var(--sky1);color:#3a1a24}
-.aq-pop .maplibregl-popup-content{background:rgba(46,24,30,.95);color:var(--text);border:1px solid rgba(255,207,138,.4);border-radius:12px;font-family:var(--body)}
-.aq-pop .maplibregl-popup-tip{border-top-color:rgba(46,24,30,.95)!important}
+.layerbtn button{background:rgba(14,46,36,.88);border:1.5px solid rgba(233,196,106,.35);border-radius:99px;padding:4px 12px;font-size:13px;font-weight:800}
+.layerbtn button[aria-pressed="true"]{background:var(--sky1);color:#14302a}
+.aq-pop .maplibregl-popup-content{background:rgba(14,46,36,.95);color:var(--text);border:1px solid rgba(233,196,106,.4);border-radius:12px;font-family:var(--body)}
+.aq-pop .maplibregl-popup-tip{border-top-color:rgba(14,46,36,.95)!important}
 .aq-pop .maplibregl-popup-close-button{color:var(--text)}
 .maplibregl-ctrl-attrib{font-size:10px}
 .maplibregl-marker .pin,.maplibregl-marker .city{cursor:pointer}
-.ship-ic{width:64px;height:56px;filter:drop-shadow(0 6px 6px rgba(40,10,20,.45))}
+.ship-ic{width:64px;height:56px;filter:drop-shadow(0 6px 6px rgba(5,30,20,.45))}
 .aq-pop a{color:var(--sky1)}
 </style>
 </head>
@@ -202,7 +202,7 @@ const TRIP = {"cities": {"SHA": {"name": "Shanghai", "label": "SHANGHAI", "lat":
 const KML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<kml xmlns=\"http://www.opengis.net/kml/2.2\">\n  <Document>\n    <name>Asia Quest 14–25 Nov 2026</name>\n    <Folder><name>Shanghai 14–15 Nov</name>\n      <Placemark><name>Shanghai Pudong Airport (PVG), Terminal 2</name><description>[BOOKED · airport]</description><Point><coordinates>121.8045,31.1504,0</coordinates></Point></Placemark>\n      <Placemark><name>INS New Paradise (Fuxing Park)</name><description>[BOOKED · sight] Your pick. 6 floors of clubs and bars at 109 Yandang Rd (雁荡路109号), inside Fuxing Park. Park gates shut at 21:00, so go in on the Yandang Rd side.</description><Point><coordinates>121.4703,31.2187,0</coordinates></Point></Placemark>\n      <Placemark><name>Xintiandi &amp; Sinan Mansions night walk</name><description>[IDEA · sight] Next door to INS. Quiet, lit-up old shikumen lanes after the clubs.</description><Point><coordinates>121.4749,31.2196,0</coordinates></Point></Placemark>\n      <Placemark><name>The Bund at dawn</name><description>[IDEA · sight] Pudong skyline across the river. First light around 06:00.</description><Point><coordinates>121.4903,31.24,0</coordinates></Point></Placemark>\n      <Placemark><name>Late-night food near Xintiandi</name><description>[IDEA · food] Soup dumplings or noodles to refuel before the airport run.</description><Point><coordinates>121.477,31.2165,0</coordinates></Point></Placemark>\n    </Folder>\n    <Folder><name>Taipei 15–18 Nov</name>\n      <Placemark><name>Taoyuan Airport (TPE), Terminal 1</name><description>[BOOKED · airport]</description><Point><coordinates>121.2328,25.0777,0</coordinates></Point></Placemark>\n      <Placemark><name>Taipei Main Station</name><description>[IDEA · transit] Airport MRT from Taoyuan (about 40 min) and the high-speed rail to Kaohsiung both start here.</description><Point><coordinates>121.517,25.0478,0</coordinates></Point></Placemark>\n      <Placemark><name>Ximending</name><description>[IDEA · sight]</description><Point><coordinates>121.5068,25.0422,0</coordinates></Point></Placemark>\n      <Placemark><name>Taipei 101 Observatory</name><description>[IDEA · sight]</description><Point><coordinates>121.5645,25.0339,0</coordinates></Point></Placemark>\n      <Placemark><name>Elephant Mountain trail</name><description>[IDEA · sight] Short steep climb; best view of 101 at sunset (around 17:05 in late November).</description><Point><coordinates>121.5706,25.0273,0</coordinates></Point></Placemark>\n      <Placemark><name>Raohe Night Market</name><description>[IDEA · food]</description><Point><coordinates>121.5775,25.0509,0</coordinates></Point></Placemark>\n      <Placemark><name>Longshan Temple</name><description>[IDEA · sight]</description><Point><coordinates>121.4999,25.0372,0</coordinates></Point></Placemark>\n      <Placemark><name>Chiang Kai-shek Memorial Hall</name><description>[IDEA · sight]</description><Point><coordinates>121.5219,25.0346,0</coordinates></Point></Placemark>\n      <Placemark><name>Din Tai Fung (Xinyi Rd)</name><description>[IDEA · food] The original branch, on Yongkang Street's corner. Take a queue number, then wander.</description><Point><coordinates>121.53,25.0334,0</coordinates></Point></Placemark>\n      <Placemark><name>Jiufen Old Street</name><description>[IDEA · sight] About 1 hour by bus from Zhongxiao Fuxing. Prettiest at dusk.</description><Point><coordinates>121.8448,25.1092,0</coordinates></Point></Placemark>\n    </Folder>\n    <Folder><name>Kaohsiung 18–19 Nov</name>\n      <Placemark><name>HSR Zuoying Station</name><description>[IDEA · transit] High-speed rail from Taipei Main Station takes about 1h35.</description><Point><coordinates>120.3081,22.6873,0</coordinates></Point></Placemark>\n      <Placemark><name>Lotus Pond, Dragon &amp; Tiger Pagodas</name><description>[IDEA · sight]</description><Point><coordinates>120.2944,22.6804,0</coordinates></Point></Placemark>\n      <Placemark><name>Formosa Boulevard Station (Dome of Light)</name><description>[IDEA · sight]</description><Point><coordinates>120.302,22.6315,0</coordinates></Point></Placemark>\n      <Placemark><name>Liuhe Night Market</name><description>[IDEA · food]</description><Point><coordinates>120.2995,22.6325,0</coordinates></Point></Placemark>\n      <Placemark><name>Pier-2 Art Center</name><description>[IDEA · sight]</description><Point><coordinates>120.2817,22.62,0</coordinates></Point></Placemark>\n      <Placemark><name>Cijin Island (ferry from Gushan)</name><description>[IDEA · sight]</description><Point><coordinates>120.2665,22.6125,0</coordinates></Point></Placemark>\n    </Folder>\n    <Folder><name>Tokyo 22–24 Nov</name>\n      <Placemark><name>Narita Airport (NRT), Terminal 2</name><description>[BOOKED · airport]</description><Point><coordinates>140.3864,35.7647,0</coordinates></Point></Placemark>\n      <Placemark><name>Hotel Grand Arc Hanzomon</name><description>[BOOKED · hotel] 22→23 Nov · check-in 14:00, out 10:00 · booking 1653718122516266 · free cancel until 21 Nov 23:59 · +81 3 3288 0111</description><Point><coordinates>139.7434,35.682991,0</coordinates></Point></Placemark>\n      <Placemark><name>Chidorigafuchi moat walk</name><description>[IDEA · sight] 5 min from the hotel. Easy morning walk before check-out.</description><Point><coordinates>139.7447,35.6915,0</coordinates></Point></Placemark>\n      <Placemark><name>Tsukiji Outer Market</name><description>[IDEA · food]</description><Point><coordinates>139.7707,35.6654,0</coordinates></Point></Placemark>\n      <Placemark><name>Senso-ji, Asakusa</name><description>[IDEA · sight]</description><Point><coordinates>139.7967,35.7148,0</coordinates></Point></Placemark>\n      <Placemark><name>Shibuya Crossing</name><description>[IDEA · sight]</description><Point><coordinates>139.7005,35.6595,0</coordinates></Point></Placemark>\n      <Placemark><name>Tokyu Stay Kamata – Tokyo Haneda</name><description>[BOOKED · hotel] 23→24 Nov · check-in 15:00, out 11:00 · booking 1653718122460473 · free cancel until 22 Nov 23:59 · +81 3 5714 1090</description><Point><coordinates>139.721514,35.560824,0</coordinates></Point></Placemark>\n      <Placemark><name>Kamata gyoza (Nihao)</name><description>[IDEA · food] Kamata is famous for crispy-winged gyoza. Early dinner, early bed.</description><Point><coordinates>139.7155,35.5615,0</coordinates></Point></Placemark>\n      <Placemark><name>Haneda Airport (HND), Terminal 3</name><description>[BOOKED · airport]</description><Point><coordinates>139.7684,35.544,0</coordinates></Point></Placemark>\n    </Folder>\n    <Folder><name>Hong Kong 24–25 Nov</name>\n      <Placemark><name>Hong Kong Airport (HKG), Terminal 1</name><description>[BOOKED · airport]</description><Point><coordinates>113.9146,22.3134,0</coordinates></Point></Placemark>\n      <Placemark><name>Airport Express · Hong Kong Station</name><description>[IDEA · transit] About 24 min to the airport.</description><Point><coordinates>114.1582,22.285,0</coordinates></Point></Placemark>\n      <Placemark><name>Tim Ho Wan (IFC)</name><description>[IDEA · food]</description><Point><coordinates>114.158,22.2852,0</coordinates></Point></Placemark>\n      <Placemark><name>Man Mo Temple</name><description>[IDEA · sight]</description><Point><coordinates>114.1501,22.284,0</coordinates></Point></Placemark>\n      <Placemark><name>Victoria Peak (Peak Tram)</name><description>[IDEA · sight]</description><Point><coordinates>114.1497,22.271,0</coordinates></Point></Placemark>\n      <Placemark><name>Star Ferry (Central → Tsim Sha Tsui)</name><description>[IDEA · transit]</description><Point><coordinates>114.1617,22.2869,0</coordinates></Point></Placemark>\n      <Placemark><name>TST Promenade · Symphony of Lights 20:00</name><description>[IDEA · sight]</description><Point><coordinates>114.174,22.2932,0</coordinates></Point></Placemark>\n      <Placemark><name>Temple Street Night Market</name><description>[IDEA · food]</description><Point><coordinates>114.17,22.3059,0</coordinates></Point></Placemark>\n    </Folder>\n    <Folder><name>Beijing (transit) </name>\n      <Placemark><name>Beijing Daxing Airport (PKX)</name><description>[BOOKED · airport]</description><Point><coordinates>116.4105,39.5098,0</coordinates></Point></Placemark>\n    </Folder>\n    <Folder><name>Moscow </name>\n      <Placemark><name>Sheremetyevo Airport (SVO), Terminal C</name><description>[BOOKED · airport]</description><Point><coordinates>37.4146,55.9726,0</coordinates></Point></Placemark>\n    </Folder>\n  </Document>\n</kml>\n";
 const P = TRIP.places, C = TRIP.cities, F = Object.fromEntries(TRIP.flights.map(f=>[f.id,f]));
 const TYPE = {hotel:"H",airport:"A",food:"F",sight:"S",transit:"T"};
-const STATUS_COL = {booked:"#7fd88f",idea:"#6fd0e6",missing:"#ff6a45"};
+const STATUS_COL = {booked:"#9be37a",idea:"#7fd6d0",missing:"#e8483b"};
 const gmaps = p => "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(p.q || p.name);
 const store = {get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
 const $=s=>document.querySelector(s);
@@ -223,15 +223,15 @@ function warmStyle(){
   const set=(id,prop,val)=>{try{map.setPaintProperty(id,prop,val)}catch(e){}};
   map.getStyle().layers.forEach(l=>{
     const id=l.id;
-    if(l.type==="background") set(id,"background-color","#f4d6a8");
-    else if(/water/.test(id)&&l.type==="fill") set(id,"fill-color","#4fa7b0");
-    else if(/water/.test(id)&&l.type==="line") set(id,"line-color","#4fa7b0");
-    else if(/park|wood|forest|grass|landcover|landuse_(park|grass)/.test(id)&&l.type==="fill") set(id,"fill-color","#c9c98a");
-    else if(/landuse|residential/.test(id)&&l.type==="fill") set(id,"fill-color","#efc796");
-    else if(/building/.test(id)&&l.type==="fill") set(id,"fill-color","#e2a978");
-    else if(/building/.test(id)&&l.type==="fill-extrusion"){ set(id,"fill-extrusion-color","#e7a06c"); set(id,"fill-extrusion-opacity",.85); }
-    else if(/highway|road|street|motorway|trunk|primary/.test(id)&&l.type==="line"&&!/casing/.test(id)) set(id,"line-color","#fff4e4");
-    else if(l.type==="symbol"){ set(id,"text-color","#5a2a30"); set(id,"text-halo-color","rgba(255,236,210,.9)"); }
+    if(l.type==="background") set(id,"background-color","#e4ecd2");
+    else if(/water/.test(id)&&l.type==="fill") set(id,"fill-color","#5fa894");
+    else if(/water/.test(id)&&l.type==="line") set(id,"line-color","#5fa894");
+    else if(/park|wood|forest|grass|landcover|landuse_(park|grass)/.test(id)&&l.type==="fill") set(id,"fill-color","#a9c77f");
+    else if(/landuse|residential/.test(id)&&l.type==="fill") set(id,"fill-color","#d6e2bd");
+    else if(/building/.test(id)&&l.type==="fill") set(id,"fill-color","#c3cfa6");
+    else if(/building/.test(id)&&l.type==="fill-extrusion"){ set(id,"fill-extrusion-color","#b9c99a"); set(id,"fill-extrusion-opacity",.85); }
+    else if(/highway|road|street|motorway|trunk|primary/.test(id)&&l.type==="line"&&!/casing/.test(id)) set(id,"line-color","#f4f8ee");
+    else if(l.type==="symbol"){ set(id,"text-color","#1f4034"); set(id,"text-halo-color","rgba(230,245,225,.9)"); }
   });
 }
 function addSources(){
@@ -241,9 +241,9 @@ function addSources(){
   map.addLayer({id:"sat",type:"raster",source:"sat",layout:{visibility:"none"},paint:{"raster-saturation":.15}},firstSymbol);
   map.addSource("legs",{type:"geojson",data:fc([])});
   map.addSource("day",{type:"geojson",data:fc([])});
-  map.addLayer({id:"legs-shadow",type:"line",source:"legs",paint:{"line-color":"#3a1a24","line-opacity":.25,"line-width":7,"line-translate":[0,5]},layout:{"line-cap":"round"}});
-  map.addLayer({id:"legs",type:"line",source:"legs",paint:{"line-color":"#fff4e4","line-opacity":["case",["get","on"],1,.4],"line-width":["case",["get","on"],4,3],"line-dasharray":[.2,3]},layout:{"line-cap":"round"}});
-  map.addLayer({id:"day",type:"line",source:"day",paint:{"line-color":"#ff8a4d","line-width":4.5,"line-dasharray":[.2,2.5]},layout:{"line-cap":"round","line-join":"round"}});
+  map.addLayer({id:"legs-shadow",type:"line",source:"legs",paint:{"line-color":"#14302a","line-opacity":.25,"line-width":7,"line-translate":[0,5]},layout:{"line-cap":"round"}});
+  map.addLayer({id:"legs",type:"line",source:"legs",paint:{"line-color":"#f4f8ee","line-opacity":["case",["get","on"],1,.4],"line-width":["case",["get","on"],4,3],"line-dasharray":[.2,3]},layout:{"line-cap":"round"}});
+  map.addLayer({id:"day",type:"line",source:"day",paint:{"line-color":"#d9483b","line-width":4.5,"line-dasharray":[.2,2.5]},layout:{"line-cap":"round","line-join":"round"}});
 }
 const fc=f=>({type:"FeatureCollection",features:f});
 const line=(coords,props={})=>({type:"Feature",properties:props,geometry:{type:"LineString",coordinates:coords}});
@@ -265,12 +265,12 @@ function arc(a,b,bend=.22,n=48){
 
 /* ---------- airship ---------- */
 const SHIP_SVG = `<svg class="ship-ic" viewBox="-40 -70 80 80" xmlns="http://www.w3.org/2000/svg">
-  <ellipse cx="0" cy="-34" rx="30" ry="15" fill="#e8d8c2" stroke="#3a1a24" stroke-width="2.5"/>
-  <path d="M-30 -34 Q0 -20 30 -34" fill="none" stroke="#3a1a24" stroke-width="1.5" opacity=".5"/>
-  <line x1="-16" y1="-21" x2="-14" y2="-8" stroke="#3a1a24" stroke-width="2"/><line x1="16" y1="-21" x2="14" y2="-8" stroke="#3a1a24" stroke-width="2"/>
-  <path d="M-26 -8 L26 -8 L18 8 L-18 8 Z" fill="#7a3e2c" stroke="#3a1a24" stroke-width="2.5"/>
+  <ellipse cx="0" cy="-34" rx="30" ry="15" fill="#f1ead6" stroke="#14302a" stroke-width="2.5"/>
+  <path d="M-30 -34 Q0 -20 30 -34" fill="none" stroke="#14302a" stroke-width="1.5" opacity=".5"/>
+  <line x1="-16" y1="-21" x2="-14" y2="-8" stroke="#14302a" stroke-width="2"/><line x1="16" y1="-21" x2="14" y2="-8" stroke="#14302a" stroke-width="2"/>
+  <path d="M-26 -8 L26 -8 L18 8 L-18 8 Z" fill="#b8322a" stroke="#14302a" stroke-width="2.5"/>
   <rect x="-12" y="-5" width="6" height="5" fill="#ffd36e"/><rect x="-2" y="-5" width="6" height="5" fill="#ffd36e"/><rect x="8" y="-5" width="6" height="5" fill="#ffd36e"/>
-  <path d="M-26 -4 l-10 -6 l0 12 z" fill="#3a1a24"/><path d="M0 -50 l0 -10 l12 4 z" fill="#ff6a45" stroke="#3a1a24" stroke-width="1.5"/></svg>`;
+  <path d="M-26 -4 l-10 -6 l0 12 z" fill="#14302a"/><path d="M0 -50 l0 -10 l12 4 z" fill="#ff6a45" stroke="#14302a" stroke-width="1.5"/></svg>`;
 const shipEl=document.createElement("div"); shipEl.innerHTML=SHIP_SVG; shipEl.style.pointerEvents="none";
 const ship=new maplibregl.Marker({element:shipEl,anchor:"bottom"});
 let shipAnim=null;
@@ -368,7 +368,7 @@ function renderLevels(){
   const mk=(key,top,sub,col,blank)=>{const b=document.createElement("button");b.className="lv"+(blank?" blank":"");b.setAttribute("aria-pressed",String(state.day===key));
     b.innerHTML=`<span class="d">${top}</span><span class="c">${sub}</span><span class="bar" style="background:${col}"></span>`;
     b.onclick=()=>selectDay(key); el.appendChild(b);};
-  mk("all","All","whole trip","#ffcf8a");
+  mk("all","All","whole trip","#e9c46a");
   TRIP.days.forEach(d=>mk(d.n,"Day "+d.n,d.date,C[d.city].color,d.blank));
 }
 function selectDay(key){
@@ -409,7 +409,7 @@ function renderXP(){
 function renderAlerts(){
   $("#alerts").innerHTML=TRIP.alerts.map(a=>`<div class="alert"><span class="lvl ${a.lvl}">${{boss:"BOSS",warn:"WARNING",info:"INFO",ok:"DONE"}[a.lvl]}</span><span><b style="color:var(--sky1)">Day ${a.day}</b> · ${esc(a.text)}</span></div>`).join("");
   const inns=Object.values(P).filter(p=>p.type==="hotel");
-  $("#innStat").innerHTML=`${inns.filter(p=>p.status==="booked").length}/${inns.length} <span style="color:#ffb39f">· ${inns.filter(p=>p.status==="missing").length} missing</span>`;
+  $("#innStat").innerHTML=`${inns.filter(p=>p.status==="booked").length}/${inns.length} <span style="color:#f6a39a">· ${inns.filter(p=>p.status==="missing").length} missing</span>`;
 }
 
 $("#backBtn").onclick=()=>{state.hl=null;openWorld();};

@@ -84,6 +84,14 @@ h2{font-size:20px;color:var(--sky1)}
 .fb .v.on{background:var(--booked);color:#14302a;border-color:var(--booked);font-weight:800}
 .fb textarea{flex:1 1 100%;min-width:0;resize:vertical;border-radius:8px;border:1px solid rgba(255,255,255,.2);background:rgba(0,0,0,.25);color:inherit;font:inherit;font-size:13px;padding:6px 8px}
 @media (min-width:881px){.log.fit{display:flex;flex-direction:column;overflow:hidden}.log.fit .fbody{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding-right:6px;scrollbar-width:thin;scrollbar-color:rgba(242,193,78,.5) transparent}}
+.addrow{border-top:1px dashed rgba(242,193,78,.35);padding-top:10px;flex:0 0 auto}
+.addtoggle{border:1px dashed var(--sky1);background:rgba(242,193,78,.08);color:var(--sky1);border-radius:99px;padding:6px 14px;font:inherit;font-weight:800;cursor:pointer}
+.addform{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}.addform[hidden]{display:none}
+.addform input,.addform select{min-width:0;border-radius:8px;border:1px solid rgba(255,255,255,.22);background:rgba(0,0,0,.25);color:inherit;font:inherit;font-size:13px;padding:7px 8px}
+.addform input[name=url],.addform input[name=name]{grid-column:1/-1}.addform select option{color:#14302a}
+.addgo{border:0;border-radius:8px;background:var(--sky1);color:#14302a;font:inherit;font-weight:900;cursor:pointer}
+.rmx{border:0;background:transparent;color:#f6a39a;font:inherit;font-size:12px;cursor:pointer;margin-left:6px;text-decoration:underline}
+.stop.flash{animation:flash 1.6s ease-out}@keyframes flash{0%{background:rgba(242,193,78,.35)}100%{background:transparent}}
 .leftcol{display:flex;flex-direction:column;gap:14px;min-width:0}
 .donep{padding:14px 16px}.donep h2{display:flex;align-items:baseline;gap:10px;margin:0 0 4px}.donep h2 small{font-family:var(--body);font-size:13px;color:var(--muted);font-weight:600}
 .donep .hint{font-size:13px;color:var(--muted);margin:4px 0 0}
@@ -276,7 +284,7 @@ const P = TRIP.places, C = TRIP.cities, F = Object.fromEntries(TRIP.flights.map(
 const TYPE = {hotel:"H",airport:"A",food:"F",sight:"S",transit:"T",shop:"$"};
 const STATUS_COL = {booked:"#9be37a",pick:"#f2c14e",idea:"#7fd6d0",missing:"#e8483b"};
 const STATUS_TXT = {booked:"BOOKED",pick:"★ YOUR PICK",idea:"IDEA",missing:"MISSING"};
-const gmaps = p => "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(p.q || p.name);
+const gmaps = p => p.url || ("https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(p.q || p.name));
 const store = {get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
 const $=s=>document.querySelector(s);
 const esc=t=>String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
@@ -287,6 +295,13 @@ const TRV = TRIP.travellers;
 const whoOf = s => s.f ? (F[s.f].who||"both") : (s.who||"both");
 const visible = s => state.path==="both" || whoOf(s)==="both" || whoOf(s)===state.path;
 const dayCityOf = d => (state.path==="Z"&&d.cityZ) ? d.cityZ : d.city;
+/* places added from the site itself (saved in this browser) */
+let EXTRA = store.get("aq-extra",[]);
+function coordsFrom(u){ const m=u.match(/!3d(-?\d+\.\d+)!4d(-?\d+\.\d+)/)||u.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/)||u.match(/[?&](?:q|query|ll|destination)=(-?\d+\.\d+),\s*(-?\d+\.\d+)/); return m?[+m[1],+m[2]]:null; }
+function mergeExtra(x){ const d=TRIP.days[x.day-1]; if(!d)return; const c=coordsFrom(x.url||"");
+  P[x.id]={city:d.city,type:x.type,name:x.name,lat:c?c[0]:null,lng:c?c[1]:null,nopin:!c,status:"pick",url:x.url||null,q:x.name,note:"Added by you"+(c?"":" · no map pin (open the link for the spot)"),user:true,cat:x.type==="food"?"🍽️ Added by you":x.type==="shop"?"🛍️ Added by you":undefined,order:[]};
+  d.stops.push({t:x.time||"any time",p:x.id,side:x.type==="sight",user:true}); }
+EXTRA.forEach(mergeExtra);
 
 /* where each city medallion sits; the secret level floats off Taiwan's east coast so it doesn't cover Taipei */
 /* world-map medallion spots [lng,lat]; Taiwan's four levels fan out around the island so they don't overlap */
@@ -402,7 +417,7 @@ function drawRoutes(){
   if(onPath("A")){ note("← Alyona from Moscow · 14 Nov",ARRIVE,"left"); note("Alyona → Beijing → Moscow · 25 Nov",LEAVE); }
   if(onPath("Z")){ note("← Aziz from Abu Dhabi via Doha · 14 Nov",AZ_IN,"left"); note("Aziz → Dubai · 26 Nov",AZ_OUT,"left"); }
   let seq=[];
-  if(state.day!=="all") seq=stopsFor(state.day).map(s=>s.p).filter(id=>id&&P[id]&&C[P[id].city]).map(id=>[P[id].lng,P[id].lat]);
+  if(state.day!=="all") seq=stopsFor(state.day).map(s=>s.p).filter(id=>id&&P[id]&&C[P[id].city]&&!P[id].nopin).map(id=>[P[id].lng,P[id].lat]);
   map.getSource("day").setData(fc(seq.length>1?[line(seq)]:[]));
   const legOn=state.day!=="all"&&LEGS.some(l=>l[2]===state.day);
   if(state.day==="all"||(state.view==="world"&&legOn)){
@@ -436,7 +451,7 @@ function drawPins(){
   if(map.getZoom()<PIN_ZOOM)return;
   const dayIds=new Set(state.day==="all"?[]:stopsFor(state.day).map(s=>s.p).filter(Boolean));
   Object.entries(P).forEach(([id,p])=>{
-    if(!C[p.city])return;
+    if(!C[p.city]||p.nopin)return;
     if(state.filter!=="all"&&p.status!==state.filter)return;
     const dim=state.day!=="all"&&!dayIds.has(id);
     const html=`<button class="pin${state.hl===id?" hl":""}${dim?" dim":""}" aria-label="${esc(p.name)}, ${p.status}"><span class="ic" style="background:${STATUS_COL[p.status]}"><span>${p.status==="missing"?"?":TYPE[p.type]}</span></span><span class="tip">${esc(p.name)}</span></button>`;
@@ -458,7 +473,7 @@ const openWorld=()=>fitWorld();
 function openCity(code,ids){
   state.view="city";state.city=code;
   
-  const list=(ids&&ids.length?ids.map(i=>P[i]):Object.values(P).filter(p=>p.city===code&&!p.far)).map(p=>[p.lng,p.lat]);
+  const list=(ids&&ids.length?ids.map(i=>P[i]):Object.values(P).filter(p=>p.city===code&&!p.far)).filter(p=>p&&!p.nopin).map(p=>[p.lng,p.lat]);
   map.fitBounds(boundsOf(list),{padding:90,maxZoom:15,duration:1600,pitch:tilt?60:0});
 }
 function updateHead(){
@@ -512,7 +527,7 @@ function stopHTML(d,s,i){
     <div class="bd flight${f.warn?" warn":""}"><div class="fl1">${whoTag(s)}<span class="code">✈ ${f.code}</span><span>${f.airline}</span><span class="tag booked">BOOKED</span></div>
     <div>${a.name.split(" (")[0]} ${f.dep} → ${b.name.split(" (")[0]} ${f.arr}</div><div class="bag">${f.bag||""} · ${f.ref}</div></div></div>`;}
   const p=s.p?P[s.p]:null;
-  const nameBtn=p?`${whoTag(s)}<button class="nm" data-go="${s.p}">${esc(p.name)}</button><span class="tag ${p.status}">${STATUS_TXT[p.status]}</span>${p.book?`<span class="bk ${p.book.lvl}">📅 ${p.book.lvl==="must"?"BOOK AHEAD":"BETTER TO PREBOOK"}</span>`:""}<a class="gm" href="${gmaps(p)}" target="_blank" rel="noopener">Google Maps ↗</a>`:"";
+  const nameBtn=p?`${whoTag(s)}<button class="nm" data-go="${s.p}">${esc(p.name)}</button><span class="tag ${p.status}">${STATUS_TXT[p.status]}</span>${p.book?`<span class="bk ${p.book.lvl}">📅 ${p.book.lvl==="must"?"BOOK AHEAD":"BETTER TO PREBOOK"}</span>`:""}<a class="gm" href="${gmaps(p)}" target="_blank" rel="noopener">Google Maps ↗</a>${p.user?`<button class="rmx" data-rm="${s.p}" title="Remove this place">✕ remove</button>`:""}`:"";
   const note=[s.x,p&&p.note&&!s.x?p.note:null].filter(Boolean).join(" ");
   return `<div class="stop${chk?" done":""}${p&&p.book&&!chk?" needbook "+p.book.lvl:""}" ${s.p?`data-pid="${s.p}"`:""}><input type="checkbox" id="${key}" data-k="${key}" ${chk?"checked":""} aria-label="Mark done"><span class="tm">${s.t}</span>
   <div class="bd">${p?"":whoTag(s)}${nameBtn}${note?`<span class="${p?"nt":"tx"}">${esc(note)}</span>`:""}${p&&p.book?`<div class="bkhow ${p.book.lvl}">📅 ${esc(p.book.how)}</div>`:""}${p&&p.cat?foodHTML(p):""}</div></div>`;
@@ -543,6 +558,27 @@ function renderDone(){
     box.querySelectorAll(".v").forEach(b=>b.onclick=()=>{fb[k]=fb[k]||{};fb[k].v=fb[k].v===b.dataset.v?null:b.dataset.v;store.set("aq-fb",fb);box.querySelectorAll(".v").forEach(x=>x.classList.toggle("on",fb[k].v===x.dataset.v));});
     const ta=box.querySelector("textarea"); ta.oninput=()=>{fb[k]=fb[k]||{};fb[k].c=ta.value;store.set("aq-fb",fb);};});
 }
+const ADD_TYPES=[["sight","遊 Place to go"],["food","食 Place to eat"],["shop","買 Place to waste money"],["hotel","票 Booking / hotel"]];
+let addOpen=false;
+function addFormHTML(){ const dsel=state.day==="all"?1:state.day;
+  return `<div class="addrow${addOpen?" open":""}"><button class="addtoggle" type="button">${addOpen?"✕ Close":"＋ Add a place"}</button>
+  <form class="addform" ${addOpen?"":"hidden"}><input name="url" type="url" placeholder="Google Maps link" required>
+  <input name="name" placeholder="Name, e.g. Modern Toilet Restaurant" required>
+  <select name="day">${TRIP.days.map(d=>`<option value="${d.n}"${d.n===dsel?" selected":""}>Day ${d.n} · ${d.date}</option>`).join("")}</select>
+  <select name="type">${ADD_TYPES.map(([k,l])=>`<option value="${k}"${k===(state.tab==="food"?"food":state.tab==="shop"?"shop":state.tab==="book"?"hotel":"sight")?" selected":""}>${l}</option>`).join("")}</select>
+  <input name="time" placeholder="Time (optional)" maxlength="12"><button class="addgo" type="submit">Add</button></form></div>`; }
+function wireAdd(){ const row=$("#log .addrow"); if(!row)return;
+  row.querySelector(".addtoggle").onclick=()=>{addOpen=!addOpen;renderLog(); if(addOpen) $("#log .addform input")?.focus();};
+  const f=row.querySelector(".addform"); f.onsubmit=e=>{e.preventDefault(); const v=Object.fromEntries(new FormData(f));
+    const x={id:"u"+Date.now().toString(36),url:v.url.trim(),name:v.name.trim(),day:+v.day,type:v.type,time:v.time.trim()};
+    EXTRA.push(x); store.set("aq-extra",EXTRA); mergeExtra(x); addOpen=false;
+    const tab={sight:"go",food:"food",shop:"shop",hotel:"book"}[x.type]; state.tab=tab;
+    if(state.day!==x.day) selectDay(x.day); else {renderLog(); drawRoutes(); drawPins();}
+    const el=document.querySelector(`[data-pid="${x.id}"]`); if(el){el.scrollIntoView({block:"nearest",behavior:"smooth"}); el.classList.add("flash");} };
+  $("#log").querySelectorAll(".rmx").forEach(b=>b.onclick=()=>{ const id=b.dataset.rm; if(!confirmRm(b))return;
+    EXTRA=EXTRA.filter(x=>x.id!==id); store.set("aq-extra",EXTRA); TRIP.days.forEach(d=>{const i=d.stops.findIndex(s=>s.p===id); if(i>=0) d.stops.splice(i,1);}); delete P[id]; renderLog(); drawRoutes(); drawPins(); });
+}
+function confirmRm(b){ if(b.dataset.sure)return true; b.dataset.sure="1"; b.textContent="tap again to remove"; setTimeout(()=>{if(b.isConnected){delete b.dataset.sure;b.textContent="✕ remove";}},3000); return false; }
 function folderOf(s){ if(s.f) return "book"; const p=s.p&&P[s.p]; if(!p) return "book";
   if(p.type==="food") return "food"; if(p.type==="shop") return "shop"; if(p.type==="sight") return "go"; return "book"; }
 const FOLDERS=[{k:"book",zh:"票",en:"Bookings & essentials"},{k:"go",zh:"遊",en:"Places to go"},{k:"food",zh:"食",en:"Places to eat"},{k:"shop",zh:"買",en:"Places to waste money"}];
@@ -569,9 +605,9 @@ function renderLog(){
     return `<div class="dayc"><div class="dayh"><h3>Day ${d.n} · ${d.date}</h3><span class="ttl" style="color:${C[dayCityOf(d)].color}">${d.title}</span></div>${inner}</div>`;
   }).join("");
   const _fb=$("#log .fbody"), _st=_fb?_fb.scrollTop:0;
-  $("#log").innerHTML=`<div class="loghead"><h2>Quest log${state.day==="all"?" · whole trip":""}</h2><span id="logPathSlot"></span></div>`+tabs+`<div class="fbody">${body}</div>`;
+  $("#log").innerHTML=`<div class="loghead"><h2>Quest log${state.day==="all"?" · whole trip":""}</h2><span id="logPathSlot"></span></div>`+tabs+`<div class="fbody">${body}</div>`+addFormHTML();
   { const k=state.day+"|"+state.tab+"|"+state.path, fbx=$("#log .fbody"); if(fbx&&renderLog._k===k) fbx.scrollTop=_st; renderLog._k=k; }
-  $("#log").querySelectorAll(".ftab").forEach(b=>b.onclick=()=>{state.tab=b.dataset.tab;renderLog();}); placePaths();
+  $("#log").querySelectorAll(".ftab").forEach(b=>b.onclick=()=>{state.tab=b.dataset.tab;renderLog();}); placePaths(); wireAdd();
   $("#log").querySelectorAll("input[data-k]").forEach(inp=>inp.onchange=()=>{done[inp.dataset.k]=inp.checked;store.set("aq-done",done);renderXP();const y=window.scrollY;renderLog();renderDone();window.scrollTo(0,y);});
 
 }

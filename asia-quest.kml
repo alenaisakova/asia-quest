@@ -52,6 +52,7 @@
       <Placemark><name>Gobi Mongolian BBQ (大戈壁)</name><description>[IDEA · food] Tip from a Taipei local. Decades-old, uniquely Taiwanese "Mongolian" BBQ: pick your meat and veg, chefs stir-fry it. 152 Songjiang Rd, 3F (another branch in Ximending).</description><Point><coordinates>121.533,25.0535,0</coordinates></Point></Placemark>
       <Placemark><name>Longmen Restaurant (龍門客棧), Maokong</name><description>[IDEA · food] Tip from a Taipei local. Roast chicken with a view over Taipei; 5 min walk from Maokong gondola station.</description><Point><coordinates>121.588,24.968,0</coordinates></Point></Placemark>
       <Placemark><name>Dadaocheng (old Taipei)</name><description>[IDEA · sight] Tip from a Taipei local. One of the oldest parts of the city: vintage shops, tea houses, cafés. Best enjoyed by just wandering. Go on a weekday.</description><Point><coordinates>121.5095,25.056,0</coordinates></Point></Placemark>
+      <Placemark><name>Simple Kaffa Sola (Taipei 101, 88F)</name><description>[IDEA · food] From the MiTaiMu video. Café by a world barista champion, high up in Taipei 101 with a city view.</description><Point><coordinates>121.5648,25.0336,0</coordinates></Point></Placemark>
     </Folder>
     <Folder><name>Tainan 18 Nov</name>
       <Placemark><name>Tainan HSR station</name><description>[YOUR PICK · transit] Change to the shuttle train (Shalun line) into the city, about 25 min.</description><Point><coordinates>120.2856,22.925,0</coordinates></Point></Placemark>
@@ -62,6 +63,7 @@
       <Placemark><name>A Sha Restaurant (main branch)</name><description>[YOUR PICK · food] Since 1940. Tainan banquet classics, famous red-crab sticky rice. Sit-down; book ahead.</description><Point><coordinates>120.203,22.989,0</coordinates></Point></Placemark>
       <Placemark><name>A Hsing Congee</name><description>[YOUR PICK · food] Milkfish congee since 1965, 95 TWD. Queue from 5 am, sells out before noon. Cash only.</description><Point><coordinates>120.196,22.994,0</coordinates></Point></Placemark>
       <Placemark><name>Hayashi Department Store (Lin)</name><description>[IDEA · shop] 1932 department store full of local brands, with a rooftop shrine. 10 min from the food crawl.</description><Point><coordinates>120.203,22.9917,0</coordinates></Point></Placemark>
+      <Placemark><name>Win Chang Beef Soup, Anping main shop</name><description>[IDEA · food] From the MiTaiMu video. Tainan-style fresh beef soup. 15 min taxi from the food crawl; check hours, beef-soup shops often close mid-afternoon.</description><Point><coordinates>120.166,22.9985,0</coordinates></Point></Placemark>
     </Folder>
     <Folder><name>Kaohsiung 18–19 Nov</name>
       <Placemark><name>HSR Zuoying Station</name><description>[IDEA · transit] High-speed rail from Taipei Main Station takes about 1h35.</description><Point><coordinates>120.3081,22.6873,0</coordinates></Point></Placemark>
@@ -99,6 +101,8 @@
       <Placemark><name>Tamsui Fisherman's Wharf</name><description>[YOUR PICK · sight] Sunset over the river mouth, around 17:00 in late November. End of the red MRT line.</description><Point><coordinates>121.411,25.183,0</coordinates></Point></Placemark>
       <Placemark><name>Miaoli HSR station</name><description>[BOOKED · transit] Hotel shuttle to Onsen Papawaqa from here (book a time with the hotel).</description><Point><coordinates>120.8255,24.6056,0</coordinates></Point></Placemark>
       <Placemark><name>Nangang HSR station</name><description>[BOOKED · transit] First HSR stop, 15 min by taxi from Xizhi.</description><Point><coordinates>121.6066,25.0522,0</coordinates></Point></Placemark>
+      <Placemark><name>Shifen Old Street (sky lanterns)</name><description>[IDEA · sight] From the MiTaiMu video. Write wishes on a sky lantern and launch it over the railway track. 30 min from Jiufen.</description><Point><coordinates>121.7756,25.0425,0</coordinates></Point></Placemark>
+      <Placemark><name>Keelung Miaokou Night Market</name><description>[IDEA · food] From the MiTaiMu video. Harbour-town night market, 40 min from Jiufen by bus.</description><Point><coordinates>121.743,25.1283,0</coordinates></Point></Placemark>
     </Folder>
     <Folder><name>Tokyo 22–24 Nov</name>
       <Placemark><name>Narita Airport (NRT), Terminal 2</name><description>[BOOKED · airport]</description><Point><coordinates>140.3864,35.7647,0</coordinates></Point></Placemark>

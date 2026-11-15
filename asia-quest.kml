@@ -16,7 +16,7 @@
       <Placemark><name>Taipei Main Station</name><description>[IDEA · transit] Airport MRT from Taoyuan (about 40 min) and the high-speed rail to Kaohsiung both start here.</description><Point><coordinates>121.517,25.0478,0</coordinates></Point></Placemark>
       <Placemark><name>Ximending</name><description>[IDEA · sight]</description><Point><coordinates>121.5068,25.0422,0</coordinates></Point></Placemark>
       <Placemark><name>Taipei 101 Observatory</name><description>[IDEA · sight]</description><Point><coordinates>121.5645,25.0339,0</coordinates></Point></Placemark>
-      <Placemark><name>Elephant Mountain trail</name><description>[IDEA · sight] Short steep climb; best view of 101 at sunset (around 17:05 in late November).</description><Point><coordinates>121.5706,25.0273,0</coordinates></Point></Placemark>
+      <Placemark><name>Elephant Mountain trail</name><description>[IDEA · sight] Short steep climb; best view of 101 at sunset (around 17:05 in late November). Moved to Tue 17 Nov (better weather).</description><Point><coordinates>121.5706,25.0273,0</coordinates></Point></Placemark>
       <Placemark><name>Raohe Night Market</name><description>[IDEA · food]</description><Point><coordinates>121.5775,25.0509,0</coordinates></Point></Placemark>
       <Placemark><name>Longshan Temple</name><description>[IDEA · sight]</description><Point><coordinates>121.4999,25.0372,0</coordinates></Point></Placemark>
       <Placemark><name>Chiang Kai-shek Memorial Hall</name><description>[IDEA · sight]</description><Point><coordinates>121.5219,25.0346,0</coordinates></Point></Placemark>
@@ -28,7 +28,7 @@
       <Placemark><name>Bopiliao Historic Block</name><description>[IDEA · sight] Qing-era brick street, 3 min from Longshan Temple.</description><Point><coordinates>121.5019,25.0367,0</coordinates></Point></Placemark>
       <Placemark><name>Yong Kang Beef Noodle</name><description>[IDEA · food] Classic braised beef noodle soup near Yongkang Street.</description><Point><coordinates>121.5293,25.0322,0</coordinates></Point></Placemark>
       <Placemark><name>Ay-Chung Flour-Rice Noodle</name><description>[IDEA · food] Standing-only bowls of oyster mee sua in Ximending.</description><Point><coordinates>121.5076,25.0438,0</coordinates></Point></Placemark>
-      <Placemark><name>Taipei Zoo · Giant Panda House</name><description>[YOUR PICK · sight] Your pick. Open 9:00–17:00, last entry 16:00. Go at opening: pandas are most active in the morning. MRT Brown line to Taipei Zoo.</description><Point><coordinates>121.581,24.9983,0</coordinates></Point></Placemark>
+      <Placemark><name>Taipei Zoo · Giant Panda House</name><description>[YOUR PICK · sight] Your pick. Open 9:00–17:00, last entry 16:00. Now on Fri 20 Nov, on the drive from Taichung. Pandas are most active in the morning.</description><Point><coordinates>121.581,24.9983,0</coordinates></Point></Placemark>
       <Placemark><name>Maokong Gondola (Taipei Zoo Station)</name><description>[IDEA · transit] Cable car from the zoo up to Maokong's tea houses. Closed Mondays.</description><Point><coordinates>121.5768,24.996,0</coordinates></Point></Placemark>
       <Placemark><name>Maokong tea houses</name><description>[IDEA · food] Oolong tea with a view over Taipei, at the top of the gondola.</description><Point><coordinates>121.588,24.969,0</coordinates></Point></Placemark>
       <Placemark><name>EasyCard design store, Ximending</name><description>[YOUR PICK · shop] Get your EasyCard here, not at the airport: the designs are much nicer.</description><Point><coordinates>121.507,25.044,0</coordinates></Point></Placemark>
@@ -106,6 +106,7 @@
       <Placemark><name>Tamsui Fisherman's Wharf</name><description>[YOUR PICK · sight] Sunset over the river mouth, around 17:00 in late November. End of the red MRT line.</description><Point><coordinates>121.411,25.183,0</coordinates></Point></Placemark>
       <Placemark><name>Shifen Old Street (sky lanterns)</name><description>[IDEA · sight] From the MiTaiMu video. Write wishes on a sky lantern and launch it over the railway track. 30 min from Jiufen.</description><Point><coordinates>121.7756,25.0425,0</coordinates></Point></Placemark>
       <Placemark><name>Keelung Miaokou Night Market</name><description>[IDEA · food] From the MiTaiMu video. Harbour-town night market, 40 min from Jiufen by bus.</description><Point><coordinates>121.743,25.1283,0</coordinates></Point></Placemark>
+      <Placemark><name>Hsinchu City God Temple &amp; snack market</name><description>[IDEA · food] Old-town temple surrounded by snack stalls. From Hsinchu HSR: Liujia line train to Hsinchu Station (~20 min) or taxi ~25 min.</description><Point><coordinates>120.9661,24.8044,0</coordinates></Point></Placemark>
     </Folder>
     <Folder><name>Tokyo 22–24 Nov</name>
       <Placemark><name>Narita Airport (NRT), Terminal 2</name><description>[BOOKED · airport]</description><Point><coordinates>140.3864,35.7647,0</coordinates></Point></Placemark>
